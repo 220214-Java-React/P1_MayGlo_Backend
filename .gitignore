@@ -5,6 +5,7 @@
 # Output
 build
 out
+*.log
 
 # Gradle Files and Folders
 .gradle
