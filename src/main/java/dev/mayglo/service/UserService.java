@@ -28,6 +28,12 @@ public class UserService {
         userRepository.create(user);
     }
 
+    // For JUNIT test
+    public User getByID(Integer i)
+    {
+        return userRepository.getByID(i);
+    }
+
 
     private String encryptPassword(String password){
         return hasher.hashToString(4, password.toCharArray());
