@@ -1,18 +1,21 @@
+import dev.mayglo.model.Reimbursement;
 import dev.mayglo.model.User;
 import dev.mayglo.service.UserService;
 import dev.mayglo.util.ConnectionFactory;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.async.ArrayBlockingQueueFactory;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+public class DatabaseTest
+{
+    UserService userService;
 
-public class ConnectionFactoryTest {
+    @BeforeEach
+    public void createNewUserService()
+    {
+        userService = new UserService();
+    }
 
     @Test
     @DisplayName("Test connecting to database")
@@ -30,7 +33,12 @@ public class ConnectionFactoryTest {
                 "Chester", "Tester", true, 0
         );
 
-        UserService userService = new UserService();
         Assertions.assertDoesNotThrow(() -> userService.create(user));
+    }
+
+    @Test
+    public void createReimbursement()
+    {
+        Reimbursement reimbursement = new Reimbursement();
     }
 }
