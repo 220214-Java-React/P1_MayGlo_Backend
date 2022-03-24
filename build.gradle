@@ -16,6 +16,8 @@ dependencies {
     implementation 'org.apache.logging.log4j:log4j-core:2.17.2'
     compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.3.3'
+    implementation group: 'at.favre.lib', name: 'bcrypt', version: '0.9.0'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.2'
 }
 
 test {

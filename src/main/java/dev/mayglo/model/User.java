@@ -110,7 +110,7 @@ public class User
         this.username = username;
     }
 
-    public void setPassword() {
+    public void setPassword(String password) {
         this.password = password;
     }
 

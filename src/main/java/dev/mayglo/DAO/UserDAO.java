@@ -25,6 +25,5 @@ public interface UserDAO<T> {
     // Delete a User
     void delete(T t);
 
-    // Delete a User by ID
-    void delete(String s);
+
 }
