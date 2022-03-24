@@ -1,4 +1,4 @@
-package dev.mayglo.user;
+package dev.mayglo.model;
 
 /**
  * Stores user account information

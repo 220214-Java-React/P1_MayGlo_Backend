@@ -1,4 +1,4 @@
-package dev.mayglo;
+package dev.mayglo.model;
 
 /**
  * Contains information relevant for a reimbursement
