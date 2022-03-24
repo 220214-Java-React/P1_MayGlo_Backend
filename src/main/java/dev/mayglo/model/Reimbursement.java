@@ -38,6 +38,13 @@ public class Reimbursement
      */
     public Reimbursement() {}
 
+    public Reimbursement(Double amount, String timeSubmitted, Integer author_ID)
+    {
+        this.amount = amount;
+        this.timeSubmitted = timeSubmitted;
+        this.author_ID = author_ID;
+    }
+
     /**
      * Constructor --> Creates a reimbursement object based on parameters for "ERS_REIMBURSEMENT" table
      * @param reimb_ID ID of this reimbursement

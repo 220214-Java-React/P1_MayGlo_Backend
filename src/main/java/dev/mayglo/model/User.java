@@ -26,6 +26,23 @@ public class User
     }
 
     /**
+     * Creates a user with minimum parameters for "ERS_USER" table, used for JUNIT testing ------
+     * @param username
+     * @param password
+     * @param email
+     * @param given_name
+     * @param surname
+     */
+    public User(String username, String password, String email, String given_name, String surname)
+    {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.given_name = given_name;
+        this.surname = surname;
+    }
+
+    /**
      * Creates a new User with all required parameters for "ERS_USER" table.
      * Used for new user creation.
      * @param username
