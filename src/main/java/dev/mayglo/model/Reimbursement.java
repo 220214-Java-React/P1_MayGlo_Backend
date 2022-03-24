@@ -38,10 +38,10 @@ public class Reimbursement
      */
     public Reimbursement() {}
 
-    public Reimbursement(Double amount, String timeSubmitted, Integer author_ID)
+    // For JUNIT test
+    public Reimbursement(Double amount, Integer author_ID)
     {
         this.amount = amount;
-        this.timeSubmitted = timeSubmitted;
         this.author_ID = author_ID;
     }
 
