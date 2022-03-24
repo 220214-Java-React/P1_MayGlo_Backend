@@ -1,6 +1,6 @@
 package dev.mayglo.repo;
 
-import dev.mayglo.DAO.UserDAO;
+import dev.mayglo.DAO.MainDAO;
 import dev.mayglo.model.User;
 import dev.mayglo.util.ConnectionFactory;
 import org.apache.logging.log4j.LogManager;
@@ -11,7 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-public class UserRepository implements UserDAO<User> {
+public class UserRepository implements MainDAO<User> {
 
     private static final Logger logger = LogManager.getLogger(UserRepository.class.getName());
 
@@ -48,7 +48,6 @@ public class UserRepository implements UserDAO<User> {
         return null;
     }
 
-    @Override
     public User getByID(Integer i) {
         return null;
     }
@@ -63,7 +62,6 @@ public class UserRepository implements UserDAO<User> {
 
     }
 
-    @Override
     public void updateByID(Integer i) {
 
     }
@@ -73,7 +71,6 @@ public class UserRepository implements UserDAO<User> {
 
     }
 
-    @Override
     public void delete(String s) {
 
     }
