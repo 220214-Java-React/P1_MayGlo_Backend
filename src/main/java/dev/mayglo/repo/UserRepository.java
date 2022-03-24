@@ -19,10 +19,8 @@ public class UserRepository implements MainDAO<User>, DatabaseRef {
 
     @Override
     public void create(User user) {
-        Connection connection = null;
 
-        try {
-            connection = ConnectionFactory.getConnection();
+        try (Connection connection = ConnectionFactory.getConnection()){
             String sql = String.format("insert into %s (%s, %s, %s, %s, " +
                             "%s, %s, %s) values (?, ?, ?, ?, ?, ?, ?)", USER_TABLE, COL_USER_USERNAME, COL_USER_PASSWORD,
                     COL_USER_EMAIL, COL_USER_GIVEN_NAME, COL_USER_SURNAME, COL_USER_IS_ACTIVE,COL_USER_ROLE_ID);
@@ -40,14 +38,6 @@ public class UserRepository implements MainDAO<User>, DatabaseRef {
             stmt.executeUpdate();
         } catch (Exception e) {
             logger.warn(e.getMessage(), e);
-        } finally {
-            if(connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 
@@ -60,10 +50,8 @@ public class UserRepository implements MainDAO<User>, DatabaseRef {
 
         User user = null;
         String sql = "select * from ers_user where " + COL_USER_ID + " = ?";
-        Connection connection;
+        try (Connection connection = ConnectionFactory.getConnection()){
 
-        try{
-            connection = ConnectionFactory.getConnection();
             PreparedStatement stmt = connection.prepareStatement(sql);
 
             stmt.setInt(1, id);
