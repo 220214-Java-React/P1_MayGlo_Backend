@@ -59,7 +59,7 @@ public class UserRepository implements MainDAO<User>, DatabaseRef {
     public User getByID(Integer id) {
 
         User user = null;
-        String sql = "select * from ers_user where id = ?";
+        String sql = "select * from ers_user where " + COL_USER_ID + " = ?";
         Connection connection;
 
         try{
