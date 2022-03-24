@@ -1,8 +1,10 @@
 import dev.mayglo.model.Reimbursement;
 import dev.mayglo.model.User;
+import dev.mayglo.service.ReimbService;
 import dev.mayglo.service.UserService;
 import dev.mayglo.util.ConnectionFactory;
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.*;
+//import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,17 +12,19 @@ import org.junit.jupiter.api.Test;
 public class DatabaseTest
 {
     UserService userService;
+    ReimbService reimbService;
 
     @BeforeEach
     public void createNewUserService()
     {
         userService = new UserService();
+        reimbService = new ReimbService();
     }
 
     @Test
     @DisplayName("Test connecting to database")
     public void testConnection() {
-        Assertions.assertDoesNotThrow(ConnectionFactory :: getConnection);
+        assertDoesNotThrow(ConnectionFactory :: getConnection);
     }
 
     @Test
@@ -33,12 +37,21 @@ public class DatabaseTest
                 "Chester", "Tester", true, 0
         );
 
-        Assertions.assertDoesNotThrow(() -> userService.create(user));
+        assertDoesNotThrow(() -> userService.create(user));
     }
 
     @Test
+    @DisplayName("Test creating a reimbursement in the PostgreSQL database")
     public void createReimbursement()
     {
-        Reimbursement reimbursement = new Reimbursement();
+        User u = userService.getByID(1);
+
+        assertNotNull(u);
+
+        Reimbursement reimbursement = new Reimbursement(50.50, u.getID());
+
+        assertNotNull(reimbursement);
+
+        assertDoesNotThrow(()-> reimbService.create(reimbursement));
     }
 }
