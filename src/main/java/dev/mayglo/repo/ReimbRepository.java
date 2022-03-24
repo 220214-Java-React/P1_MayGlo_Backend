@@ -30,15 +30,16 @@ public class ReimbRepository implements MainDAO<Reimbursement>, DatabaseRef
         try(Connection connection = ConnectionFactory.getConnection())
         {
             // Columns to query
-            columnsToQuery = "(" + COL_REIMB_AMT + ", " + COL_REIMB_SUBMITTED + ", " + COL_REIMB_AUTHOR_ID + ")";
+            columnsToQuery = "(" + COL_REIMB_AMT + ", " + COL_REIMB_SUBMITTED + ", " + COL_REIMB_AUTHOR_ID + ", " + COL_REIMB_TYPE_ID + ")";
 
             // insert query to reimbursement table
-            query = "insert into " + REIMB_TABLE + columnsToQuery + " values (?, now(), ?)";
+            query = "insert into " + REIMB_TABLE + columnsToQuery + " values (?, now(), ?, ?)";
 
             PreparedStatement stmt = connection.prepareStatement(query);
 
             stmt.setDouble(1, reimbursement.getAmount());
             stmt.setInt(2, reimbursement.getAuthor_ID());
+            stmt.setInt(3, reimbursement.getType_ID());
 
             stmt.executeUpdate();
         }

@@ -49,6 +49,7 @@ public class DatabaseTest
         assertNotNull(u);
 
         Reimbursement reimbursement = new Reimbursement(50.50, u.getID());
+        reimbursement.setType_ID(0);
 
         assertNotNull(reimbursement);
 
