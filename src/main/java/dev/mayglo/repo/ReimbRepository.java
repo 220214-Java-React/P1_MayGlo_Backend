@@ -25,7 +25,7 @@ public class ReimbRepository implements MainDAO<Reimbursement>, DatabaseRef
     {
     }
 
-    public void createReimbursement(Reimbursement reimbursement, User user)
+    public void createReimbursement(Reimbursement reimbursement)
     {
         try(Connection connection = ConnectionFactory.getConnection())
         {
@@ -38,7 +38,7 @@ public class ReimbRepository implements MainDAO<Reimbursement>, DatabaseRef
             PreparedStatement stmt = connection.prepareStatement(query);
 
             stmt.setDouble(1, reimbursement.getAmount());
-            stmt.setInt(2, user.getID());
+            stmt.setInt(2, reimbursement.getAuthor_ID());
 
             stmt.executeUpdate();
         }
