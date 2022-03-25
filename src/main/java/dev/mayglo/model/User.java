@@ -123,7 +123,7 @@ public class User
 
     // SETTERS
 
-    public void setUsername() {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -131,23 +131,23 @@ public class User
         this.password = password;
     }
 
-    public void setEmail() {
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public void setGiven_name() {
+    public void setGiven_name(String given_name) {
         this.given_name = given_name;
     }
 
-    public void setSurname() {
+    public void setSurname(String surname) {
         this.surname = surname;
     }
 
-    public void setIs_Active() {
+    public void setIs_Active(Boolean is_Active) {
         this.is_Active = is_Active;
     }
 
-    public void setRole_ID() {
+    public void setRole_ID(Integer role_ID) {
         this.role_ID = role_ID;
     }
 
