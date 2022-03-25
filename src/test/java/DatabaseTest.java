@@ -9,6 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 public class DatabaseTest
 {
     UserService userService;
@@ -54,5 +56,16 @@ public class DatabaseTest
         assertNotNull(reimbursement);
 
         assertDoesNotThrow(()-> reimbService.create(reimbursement));
+    }
+
+    @Test
+    @DisplayName("Test retrieving all reimbursements in database")
+    public void getAllReimbursementsFromDatabase()
+    {
+        assertDoesNotThrow(()->reimbService.getAllReimbursements());
+
+        List<Reimbursement> rbs = reimbService.getAllReimbursements();
+
+        assertNotNull(rbs);
     }
 }
