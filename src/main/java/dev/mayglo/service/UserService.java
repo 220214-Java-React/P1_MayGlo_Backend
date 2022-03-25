@@ -6,6 +6,8 @@ import dev.mayglo.repo.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
+
 public class UserService {
 
     private final UserRepository userRepository;
@@ -34,6 +36,17 @@ public class UserService {
         return userRepository.getByID(i);
     }
 
+    public List<User> getAll() {
+        return userRepository.getAll();
+    }
+
+    public void update(User user) {
+        userRepository.update(user);
+    }
+
+    public void delete(User user) {
+        userRepository.delete(user);
+    }
 
     private String encryptPassword(String password){
         return hasher.hashToString(4, password.toCharArray());
