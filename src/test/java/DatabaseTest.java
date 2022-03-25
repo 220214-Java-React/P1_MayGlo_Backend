@@ -43,6 +43,25 @@ public class DatabaseTest
     }
 
     @Test
+    @DisplayName("Get a User by their ID")
+    public void getAUserByID() {
+        assertDoesNotThrow(() -> userService.getByID(1));
+    }
+
+    @Test
+    @DisplayName("Get all Users")
+    public void getAllUsers() {
+        assertDoesNotThrow(() -> userService.getAll());
+    }
+
+    @Test
+    @DisplayName("Create and delete a test user")
+    public void deleteAUser() {
+        User user = userService.getByID(7);
+        assertDoesNotThrow(() -> userService.delete(user));
+    }
+
+    @Test
     @DisplayName("Test creating a reimbursement in the PostgreSQL database")
     public void createReimbursement()
     {
