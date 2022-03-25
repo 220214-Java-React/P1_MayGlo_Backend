@@ -28,9 +28,10 @@ public class ConnectionFactory {
      * @return The Connection, named "instance"
      * @throws SQLException
      */
-    public static Connection getConnection() throws SQLException {
+    public static Connection getConnection() throws SQLException, ClassNotFoundException {
 
         if (instance == null || instance.isClosed()) {
+            Class.forName("org.postgresql.Driver");
             instance = DriverManager.getConnection(url, username, password);
             logger.info("DB Connection started");
         }

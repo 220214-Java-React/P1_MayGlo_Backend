@@ -151,4 +151,15 @@ public class User
         this.role_ID = role_ID;
     }
 
+    @Override
+    public String toString() {
+        return "user_ID: " + user_ID + "\n" +
+                "username:" + username + "\n" +
+                "password: " + password + "\n" +
+                "email: " + email + "\n" +
+                "given_name: " + given_name + "\n" +
+                "surname: " + surname + "\n" +
+                "is_Active: " + is_Active + "\n" +
+                "role_ID: " + role_ID + "\n";
+    }
 }

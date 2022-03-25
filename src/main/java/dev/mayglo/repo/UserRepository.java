@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserRepository implements MainDAO<User>, DatabaseRef {
@@ -20,10 +20,12 @@ public class UserRepository implements MainDAO<User>, DatabaseRef {
     @Override
     public void create(User user) {
 
-        try (Connection connection = ConnectionFactory.getConnection()){
-            String sql = String.format("insert into %s (%s, %s, %s, %s, " +
-                            "%s, %s, %s) values (?, ?, ?, ?, ?, ?, ?)", USER_TABLE, COL_USER_USERNAME, COL_USER_PASSWORD,
-                    COL_USER_EMAIL, COL_USER_GIVEN_NAME, COL_USER_SURNAME, COL_USER_IS_ACTIVE,COL_USER_ROLE_ID);
+        try (Connection connection = ConnectionFactory.getConnection()) {
+
+            String sql = String.format("insert into %s (%s, %s, %s, %s, %s, %s, %s)" +
+                            " values (?, ?, ?, ?, ?, ?, ?)",
+                    USER_TABLE, COL_USER_USERNAME, COL_USER_PASSWORD, COL_USER_EMAIL,
+                    COL_USER_GIVEN_NAME, COL_USER_SURNAME, COL_USER_IS_ACTIVE, COL_USER_ROLE_ID);
 
 
             PreparedStatement stmt = connection.prepareStatement(sql);
@@ -34,8 +36,8 @@ public class UserRepository implements MainDAO<User>, DatabaseRef {
             stmt.setString(5, user.getSurname());
             stmt.setBoolean(6, user.getIs_Active());
             stmt.setInt(7, user.getRole_ID());
-
             stmt.executeUpdate();
+
         } catch (Exception e) {
             logger.warn(e.getMessage(), e);
         }
@@ -47,30 +49,29 @@ public class UserRepository implements MainDAO<User>, DatabaseRef {
     }
 
     public User getByID(Integer id) {
-
         User user = null;
-        String sql = "select * from ers_user where " + COL_USER_ID + " = ?";
-        try (Connection connection = ConnectionFactory.getConnection()){
+        String sql = "select * from " + USER_TABLE + " where " + COL_USER_ID + " = ?";
+
+        try (Connection connection = ConnectionFactory.getConnection()) {
 
             PreparedStatement stmt = connection.prepareStatement(sql);
-
             stmt.setInt(1, id);
+            ResultSet resultSet = stmt.executeQuery();
 
-            ResultSet rs = stmt.executeQuery();
-
-            if(rs.next()){
+            if (resultSet.next()) {
                 user = new User(
-                        rs.getInt("user_id"),
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getString("email"),
-                        rs.getString("given_name"),
-                        rs.getString("surname"),
-                        rs.getBoolean("is_active"),
-                        rs.getInt("role_id")
-                );
+                        resultSet.getInt(COL_USER_ID),
+                        resultSet.getString(COL_USER_USERNAME),
+                        resultSet.getString(COL_USER_PASSWORD),
+                        resultSet.getString(COL_USER_EMAIL),
+                        resultSet.getString(COL_USER_GIVEN_NAME),
+                        resultSet.getString(COL_USER_SURNAME),
+                        resultSet.getBoolean(COL_USER_IS_ACTIVE),
+                        resultSet.getInt(COL_USER_ROLE_ID));
+                logger.info("Retrieved user.");
             }
         } catch (Exception e) {
+            logger.warn(e.getMessage(), e);
             e.printStackTrace();
         }
 
@@ -79,23 +80,83 @@ public class UserRepository implements MainDAO<User>, DatabaseRef {
 
     @Override
     public List<User> getAll() {
-        return null;
+        List<User> users = new ArrayList<>();
+        String sql = String.format("select * from %s", USER_TABLE);
+        try (Connection connection = ConnectionFactory.getConnection()) {
+
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                users.add(new User(
+                        resultSet.getInt(COL_USER_ID),
+                        resultSet.getString(COL_USER_USERNAME),
+                        resultSet.getString(COL_USER_PASSWORD),
+                        resultSet.getString(COL_USER_EMAIL),
+                        resultSet.getString(COL_USER_GIVEN_NAME),
+                        resultSet.getString(COL_USER_SURNAME),
+                        resultSet.getBoolean(COL_USER_IS_ACTIVE),
+                        resultSet.getInt(COL_USER_ROLE_ID)));
+            }
+            logger.info("Retrieved user list.");
+
+        } catch (Exception e) {
+            logger.warn(e.getMessage(), e);
+            e.printStackTrace();
+        }
+
+        return users;
     }
 
     @Override
     public void update(User user) {
 
+        try (Connection connection = ConnectionFactory.getConnection()) {
+
+            String sql = "update " + USER_TABLE + " set " + COL_USER_USERNAME + " = ?, " +
+                    COL_USER_PASSWORD + " = ?, " + COL_USER_EMAIL + " = ?, " + COL_USER_GIVEN_NAME +
+                    " = ?, " + COL_USER_SURNAME + " = ?, " + COL_USER_IS_ACTIVE + " = ?, "
+                    + COL_USER_ROLE_ID + " = ?";
+
+
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, user.getUsername());
+            stmt.setString(2, user.getPassword());
+            stmt.setString(3, user.getEmail());
+            stmt.setString(4, user.getGiven_name());
+            stmt.setString(5, user.getSurname());
+            stmt.setBoolean(6, user.getIs_Active());
+            stmt.setInt(7, user.getRole_ID());
+            stmt.executeUpdate();
+            logger.info("Updated user.");
+
+        } catch (Exception e) {
+            logger.warn(e.getMessage(), e);
+        }
     }
 
-    public void updateByID(Integer i) {
-
+    // May not be needed. Use get -> delete(User user)
+    public void updateByID(Integer id) {
     }
 
     @Override
     public void delete(User user) {
 
+        try (Connection connection = ConnectionFactory.getConnection()) {
+
+            String sql = "delete from " + USER_TABLE + " where " + COL_USER_ID + " = ?";
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, user.getID());
+            stmt.executeUpdate();
+
+            logger.info("User ID #" + user.getID() + " deleted.");
+
+        } catch (Exception e) {
+            logger.warn(e.getMessage(), e);
+        }
     }
 
+    // May not be needed
     public void delete(String s) {
 
     }
