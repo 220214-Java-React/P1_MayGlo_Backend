@@ -27,7 +27,7 @@ public class Reimbursement
     private String timeResolved;
     private String description;
     // receipt would go here ----
-    private Integer payment_ID;
+    // private Integer payment_ID;  --- future implementation
     private Integer author_ID;
     private Integer resolver_ID;
     private Integer status_ID;
@@ -52,20 +52,18 @@ public class Reimbursement
      * @param timeSubmitted Time of submission
      * @param timeResolved Time of resolution
      * @param description Description of reimbursement
-     * @param payment_ID ID of payment
      * @param author_ID ID of author
      * @param resolver_ID ID of resolver
      * @param status_ID ID of reimbursement status
      * @param type_ID ID of reimbursement type
      */
-    public Reimbursement(Integer reimb_ID, Double amount, String timeSubmitted, String timeResolved, String description, Integer payment_ID, Integer author_ID, Integer resolver_ID, Integer status_ID, Integer type_ID)
+    public Reimbursement(Integer reimb_ID, Double amount, String timeSubmitted, String timeResolved, String description, Integer author_ID, Integer resolver_ID, Integer status_ID, Integer type_ID)
     {
         this.reimb_ID = reimb_ID;
         this.amount = amount;
         this.timeSubmitted = timeSubmitted;
         this.timeResolved = timeResolved;
         this.description = description;
-        this.payment_ID = payment_ID;
         this.author_ID = author_ID;
         this.resolver_ID = resolver_ID;
         this.status_ID = status_ID;
@@ -97,11 +95,6 @@ public class Reimbursement
     public String getDescription()
     {
         return description;
-    }
-
-    public Integer getPayment_ID()
-    {
-        return payment_ID;
     }
 
     public Integer getAuthor_ID()
@@ -150,11 +143,6 @@ public class Reimbursement
     public void setDescription(String description)
     {
         this.description = description;
-    }
-
-    public void setPayment_ID(Integer payment_ID)
-    {
-        this.payment_ID = payment_ID;
     }
 
     public void setAuthor_ID(Integer author_ID)
