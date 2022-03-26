@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @WebServlet(urlPatterns = "/login.html")
@@ -43,7 +44,17 @@ public class LoginController extends HttpServlet
             // we have a new user object -> what do we do with it?
             // try and persist it to the database, however we should not go to our Repository directly.
             // We should instead pass this variable to the UserService so that it can handle sending to the DAO.
-            userService.create(user);
+            List<User> users = userService.getAll();
+
+            for (User u: users)
+            {
+                if (user.getUsername().equals(u.getUsername()))
+                {
+                    logger.info("Found: " + user);
+                    break;
+                }
+            }
+
             logger.info(user.toString());
         } catch (Exception e) {
             logger.warn(e);
