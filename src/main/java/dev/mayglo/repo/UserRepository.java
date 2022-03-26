@@ -116,6 +116,7 @@ public class UserRepository implements MainDAO<User>, DatabaseRef {
             String sql = "update " + USER_TABLE + " set " + COL_USER_USERNAME + " = ?, " +
                     COL_USER_PASSWORD + " = ?, " + COL_USER_EMAIL + " = ?, " + COL_USER_GIVEN_NAME +
                     " = ?, " + COL_USER_SURNAME + " = ?, " + COL_USER_IS_ACTIVE + " = ?, "
+
                     + COL_USER_ROLE_ID + " = ? where " + COL_USER_ID + " = ?";
 
 
@@ -127,6 +128,7 @@ public class UserRepository implements MainDAO<User>, DatabaseRef {
             stmt.setString(5, user.getSurname());
             stmt.setBoolean(6, user.getIs_Active());
             stmt.setInt(7, user.getRole_ID());
+
             stmt.setInt(8, user.getID());
             stmt.executeUpdate();
             logger.info("Updated user.");

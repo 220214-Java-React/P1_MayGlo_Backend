@@ -48,7 +48,7 @@ public class ReimbRepository implements MainDAO<Reimbursement>, DatabaseRef
             // Execute query
             stmt.executeUpdate();
         }
-        catch (SQLException sqlE)
+        catch (Exception e)
         {
             // Log exceptions
             logger.warn(sqlE);
@@ -167,10 +167,11 @@ public class ReimbRepository implements MainDAO<Reimbursement>, DatabaseRef
                 ));
             }
         }
+
         catch (SQLException | ClassNotFoundException sqlE)
         {
             // Log exceptions
-            logger.warn(sqlE);
+            logger.warn(e);
         }
 
         return reimbs;  // Null or list of reimbursements
