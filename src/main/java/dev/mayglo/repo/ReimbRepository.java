@@ -51,7 +51,9 @@ public class ReimbRepository implements MainDAO<Reimbursement>, DatabaseRef
         catch (Exception e)
         {
             // Log exceptions
-            logger.warn(e);
+            logger.warn(sqlE);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
@@ -165,7 +167,8 @@ public class ReimbRepository implements MainDAO<Reimbursement>, DatabaseRef
                 ));
             }
         }
-        catch (Exception e)
+
+        catch (SQLException | ClassNotFoundException sqlE)
         {
             // Log exceptions
             logger.warn(e);

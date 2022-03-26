@@ -3,11 +3,12 @@ package dev.mayglo.util;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
+@WebFilter(asyncSupported = true, urlPatterns = "/*")
 public class CorsFilter implements Filter {
 
     private static final Logger log = LogManager.getLogger(CorsFilter.class);
