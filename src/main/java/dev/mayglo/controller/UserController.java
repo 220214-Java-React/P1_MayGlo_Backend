@@ -97,21 +97,46 @@ public class UserController extends HttpServlet {
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        // Extract the request in JSON form from the BufferedReader on the request object
         String JSON = req.getReader().lines().collect(Collectors.joining());
         User user = null;
 
-        // Unmarshall the JSON string into a Java instance of the User class
         try {
+            // Unmarshall the JSON string into a Java instance of the User class
             user = mapper.readValue(JSON, User.class);
             userService.create(user);
             logger.debug(user.toString());
-
+            resp.setStatus(204);
         } catch (Exception e) {
             logger.warn(e);
         }
+    }
 
-        resp.setStatus(204);
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        String JSON = req.getReader().lines().collect(Collectors.joining());
+        User user = null;
+
+        String updateByID = req.getParameter("update");
+
+        // Update an existing user
+        if (updateByID != null) {
+            // Parse the ID from the provided string
+            int userID = Integer.parseInt(updateByID);
+
+            // fill "user" with our new values
+            User updatedUser = mapper.readValue(JSON, User.class);
+            logger.debug(updatedUser.toString());
+
+            // Get the existing User we want to update
+            User accountToUpdate = userService.getByID(userID);
+            logger.debug(accountToUpdate.toString());
+
+            // Set all values
+            accountToUpdate.setAll(updatedUser);
+
+            // Update the account
+            userService.update(accountToUpdate);
+        }
     }
 
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -147,3 +172,4 @@ public class UserController extends HttpServlet {
          */
 
 }
+

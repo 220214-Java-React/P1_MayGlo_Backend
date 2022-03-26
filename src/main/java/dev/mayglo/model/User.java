@@ -151,6 +151,16 @@ public class User
         this.role_ID = role_ID;
     }
 
+    public void setAll(User updatedUser) {
+        this.username = updatedUser.getUsername();
+        this.password = updatedUser.getPassword();
+        this.email = updatedUser.getEmail();
+        this.given_name = updatedUser.getGiven_name();
+        this.surname = updatedUser.getSurname();
+        this.is_Active = updatedUser.getIs_Active();
+        this.role_ID = updatedUser.getRole_ID();
+    }
+
     @Override
     public String toString() {
         return "user_ID: " + user_ID + "\n" +
