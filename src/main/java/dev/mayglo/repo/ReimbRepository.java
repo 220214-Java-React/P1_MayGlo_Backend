@@ -167,7 +167,7 @@ public class ReimbRepository implements MainDAO<Reimbursement>, DatabaseRef
                 ));
             }
         }
-        catch (SQLException sqlE)
+        catch (SQLException | ClassNotFoundException sqlE)
         {
             // Log exceptions
             logger.warn(sqlE);

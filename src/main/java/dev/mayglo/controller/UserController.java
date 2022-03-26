@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,40 +33,69 @@ public class UserController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<User> users = userService.getAll();
+
         String JSON = "";
+        String byID = req.getParameter("user_id");
+        String byis_Active = req.getParameter("is_Active");
+        String byrole_ID = req.getParameter("role_ID");
 
-        try {
-            JSON = mapper.writeValueAsString(users);
-
+        // Search by ID
+        if (byID != null) {
+            User userByID = userService.getByID(Integer.parseInt(byID));
+            logger.debug(userByID.toString());
+            JSON = mapper.writeValueAsString(userByID);
             resp.setContentType(JSON);
             resp.setStatus(200);
             resp.getOutputStream().println(JSON);
-            // Webpage output:
+        }
+
+        // Search by is_Active
+        if (byis_Active != null) {
+            List<User> usersByActivity = new ArrayList<>();
+            for (User user : userService.getAll()) {
+                if (user.getIs_Active().equals(Boolean.parseBoolean(byis_Active))) {
+                    usersByActivity.add(user);
+                    logger.debug("Added " + user.getUsername());
+                }
+            }
+            JSON = mapper.writeValueAsString(usersByActivity);
+            resp.setContentType(JSON);
+            resp.setStatus(200);
+            resp.getOutputStream().println(JSON);
+        }
+
+        // Search by role_ID
+        if (byrole_ID != null) {
+            List<User> usersByRole = new ArrayList<>();
+            for (User user : userService.getAll()) {
+                if (user.getRole_ID().equals(Integer.parseInt(byrole_ID))) {
+                    usersByRole.add(user);
+                    logger.debug("Added " + user.getUsername());
+                }
+            }
+            JSON = mapper.writeValueAsString(usersByRole);
+            resp.setContentType(JSON);
+            resp.setStatus(200);
             resp.getOutputStream().println(JSON);
 
-        } catch (Exception e) {
-            logger.warn(e);
+        } else if (byID == null && byis_Active == null && byrole_ID == null) {
+
+            try {
+                List<User> users = userService.getAll();
+
+                JSON = mapper.writeValueAsString(users);
+                resp.setContentType(JSON);
+                resp.setStatus(200);
+                // Webpage output:
+                resp.getOutputStream().println(JSON);
+
+            } catch (Exception e) {
+                logger.warn(e);
+            }
         }
     }
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        // TODO: deactivate a user:
-        /*
-        String JSONUser = req.getReader().lines().collect(Collectors.joining());
-        User userToDeactivate = null;
-
-        try {
-            userToDeactivate = mapper.readValue(JSONUser, User.class);
-            userToDeactivate.setIs_Active(false);
-            userService.update(userToDeactivate);
-
-        } catch (Exception e) {
-            logger.warn(e);
-        }
-
-         */
 
         // Extract the request in JSON form from the BufferedReader on the request object
         String JSON = req.getReader().lines().collect(Collectors.joining());
@@ -74,9 +104,9 @@ public class UserController extends HttpServlet {
         // Unmarshall the JSON string into a Java instance of the User class
         try {
             user = mapper.readValue(JSON, User.class);
-
             userService.create(user);
-            logger.info(user.toString());
+            logger.debug(user.toString());
+
         } catch (Exception e) {
             logger.warn(e);
         }
@@ -92,11 +122,28 @@ public class UserController extends HttpServlet {
 
         try {
             userToDelete = mapper.readValue(JSON, User.class);
+
             userService.delete(userToDelete);
 
         } catch (Exception e) {
             logger.warn(e);
         }
     }
+
+    // TODO: deactivate a user:
+        /*
+        String JSONUser = req.getReader().lines().collect(Collectors.joining());
+        User userToDeactivate = null;
+
+        try {
+            userToDeactivate = mapper.readValue(JSONUser, User.class);
+            userToDeactivate.setIs_Active(false);
+            userService.update(userToDeactivate);
+
+        } catch (Exception e) {
+            logger.warn(e);
+        }
+
+         */
 
 }
