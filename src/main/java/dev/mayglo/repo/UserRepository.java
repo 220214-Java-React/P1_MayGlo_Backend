@@ -44,10 +44,6 @@ public class UserRepository implements MainDAO<User>, DatabaseRef {
     }
 
     @Override
-    public User get(User user) {
-        return null;
-    }
-
     public User getByID(Integer id) {
         User user = null;
         String sql = "select * from " + USER_TABLE + " where " + COL_USER_ID + " = ?";
