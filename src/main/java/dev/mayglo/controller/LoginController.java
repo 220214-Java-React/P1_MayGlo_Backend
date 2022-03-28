@@ -53,9 +53,9 @@ public class LoginController extends HttpServlet
                     user = u;
                     logger.info("Found: " + user);
                     JSON = mapper.writeValueAsString(user);
+                    logger.info(JSON);
                     resp.setContentType("application/json");
                     resp.getOutputStream().println(JSON);
-                    break;
                 }
             }
 
@@ -66,6 +66,6 @@ public class LoginController extends HttpServlet
 
 
         // 200 - OK, 201 - Created is good if you're returning, 204 - No Content
-        resp.setStatus(204);
+        resp.setStatus(200);
     }
 }

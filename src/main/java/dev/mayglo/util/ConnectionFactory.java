@@ -16,9 +16,9 @@ public class ConnectionFactory {
     static Logger logger = LogManager.getLogger(ConnectionFactory.class.getName());
 
     private static Connection instance;
-    private static String url = "";
-    private static String username = "";
-    private static String password = "";
+    private static String url = "jdbc:postgresql://postgres-test.cr8roorqjz0c.us-east-1.rds.amazonaws.com:5432/postgres?currentSchema=test-p1";
+    private static String username = "postgres";
+    private static String password = "&hV#JVVu3&c4";
 
     /**
      * If there is no Connection or the Connection is closed, this method creates a Connection
@@ -29,22 +29,9 @@ public class ConnectionFactory {
      * @throws SQLException
      */
     public static Connection getConnection() throws SQLException, ClassNotFoundException {
-        Map<String, String> env = System.getenv();
-        for (String envName : env.keySet()) {
-            if (envName.equals("DB_USER")) {
-                username = env.get(envName);
-                logger.debug("The username is " + username);
-            }
-            if (envName.equals("DB_PASSWORD")) {
-                password = env.get(envName);
-                logger.debug("The password is " + password);
-            }
-            if (envName.equals("DB_URL")) {
-                url = env.get(envName);
-                logger.debug("The url is " + url);
-            }
-        }
-
+        logger.info(username);
+        logger.info(password);
+        logger.info(url);
         if (instance == null || instance.isClosed()) {
             Class.forName("org.postgresql.Driver");
             instance = DriverManager.getConnection(url, username, password);
