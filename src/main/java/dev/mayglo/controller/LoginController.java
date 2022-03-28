@@ -50,7 +50,11 @@ public class LoginController extends HttpServlet
             {
                 if (user.getUsername().equals(u.getUsername()))
                 {
+                    user = u;
                     logger.info("Found: " + user);
+                    JSON = mapper.writeValueAsString(user);
+                    resp.setContentType("application/json");
+                    resp.getOutputStream().println(JSON);
                     break;
                 }
             }
