@@ -56,6 +56,10 @@ public class UserService {
         return userRepository.getAll();
     }
 
+    public User getByUsername(String username) {
+        return userRepository.getByUsername(username);
+    }
+
     /**
      * Updates a User.
      * @param user User to update

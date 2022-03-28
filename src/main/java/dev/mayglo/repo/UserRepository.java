@@ -86,6 +86,42 @@ public class UserRepository implements MainDAO<User>, DatabaseRef {
     }
 
     /**
+     * Gets a User by their username number.
+     * @param username The username
+     * @return User corresponding with the provided username
+     */
+    public User getByUsername(String username) {
+        User user = null;
+        String sql = "select * from " + USER_TABLE + " where " + COL_USER_USERNAME + " = ?";
+
+        try (Connection connection = ConnectionFactory.getConnection()) {
+
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, username);
+            ResultSet resultSet = stmt.executeQuery();
+
+            if (resultSet.next()) {
+                user = new User(
+                        resultSet.getInt(COL_USER_ID),
+                        resultSet.getString(COL_USER_USERNAME),
+                        resultSet.getString(COL_USER_PASSWORD),
+                        resultSet.getString(COL_USER_EMAIL),
+                        resultSet.getString(COL_USER_GIVEN_NAME),
+                        resultSet.getString(COL_USER_SURNAME),
+                        resultSet.getBoolean(COL_USER_IS_ACTIVE),
+                        resultSet.getInt(COL_USER_ROLE_ID));
+                logger.info("Retrieved user.");
+            }
+        } catch (Exception e) {
+            logger.warn(e.getMessage(), e);
+            e.printStackTrace();
+        }
+
+        return user;
+    }
+
+
+    /**
      * Returns a list of all Users in the database.
      * @return A User List
      */
