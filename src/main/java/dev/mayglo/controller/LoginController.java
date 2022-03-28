@@ -41,31 +41,37 @@ public class LoginController extends HttpServlet
         try {
             user = mapper.readValue(JSON, User.class);
 
-            // we have a new user object -> what do we do with it?
-            // try and persist it to the database, however we should not go to our Repository directly.
-            // We should instead pass this variable to the UserService so that it can handle sending to the DAO.
-            List<User> users = userService.getAll();
+            User DBUser = userService.getByUsername(user.getUsername());
 
-            for (User u: users)
+            if (DBUser != null && userService.checkUser(DBUser, user))
             {
-                if (user.getUsername().equals(u.getUsername()))
-                {
-                    user = u;
-                    logger.info("Found: " + user);
-                    JSON = mapper.writeValueAsString(user);
-                    resp.setContentType("application/json");
-                    resp.getOutputStream().println(JSON);
-                    break;
-                }
+                logger.info("Found: " + DBUser);
+
+                // 200 - OK, 201 - Created is good if you're returning, 204 - No Content
+                resp.setStatus(204);
             }
+            else
+            {
+                resp.setStatus(205);
+            }
+
+//            List<User> users = userService.getAll();
+//
+//            for (User u: users)
+//            {
+//                if (user.getUsername().equals(u.getUsername()))
+//                {
+//                    user = u;
+//                    JSON = mapper.writeValueAsString(user);
+//                    logger.info(JSON);
+//                    resp.setContentType("application/json");
+//                    resp.getOutputStream().println(JSON);
+//                }
+//            }
 
             logger.info(user.toString());
         } catch (Exception e) {
             logger.warn(e);
         }
-
-
-        // 200 - OK, 201 - Created is good if you're returning, 204 - No Content
-        resp.setStatus(204);
     }
 }

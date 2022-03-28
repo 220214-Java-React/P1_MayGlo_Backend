@@ -13,10 +13,17 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * UserRepository interacts with the SQL database to create, read, update, and delete User data.
+ */
 public class UserRepository implements MainDAO<User>, DatabaseRef {
 
     private static final Logger logger = LogManager.getLogger(UserRepository.class.getName());
 
+    /**
+     * Creates a user.
+     * @param user User to be created
+     */
     @Override
     public void create(User user) {
 
@@ -43,7 +50,11 @@ public class UserRepository implements MainDAO<User>, DatabaseRef {
         }
     }
 
-    @Override
+    /**
+     * Gets a User by their ID number.
+     * @param id The ID number
+     * @return User corresponding with the provided ID number
+     */
     public User getByID(Integer id) {
         User user = null;
         String sql = "select * from " + USER_TABLE + " where " + COL_USER_ID + " = ?";
@@ -74,6 +85,46 @@ public class UserRepository implements MainDAO<User>, DatabaseRef {
         return user;
     }
 
+    /**
+     * Gets a User by their username number.
+     * @param username The username
+     * @return User corresponding with the provided username
+     */
+    public User getByUsername(String username) {
+        User user = null;
+        String sql = "select * from " + USER_TABLE + " where " + COL_USER_USERNAME + " = ?";
+
+        try (Connection connection = ConnectionFactory.getConnection()) {
+
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, username);
+            ResultSet resultSet = stmt.executeQuery();
+
+            if (resultSet.next()) {
+                user = new User(
+                        resultSet.getInt(COL_USER_ID),
+                        resultSet.getString(COL_USER_USERNAME),
+                        resultSet.getString(COL_USER_PASSWORD),
+                        resultSet.getString(COL_USER_EMAIL),
+                        resultSet.getString(COL_USER_GIVEN_NAME),
+                        resultSet.getString(COL_USER_SURNAME),
+                        resultSet.getBoolean(COL_USER_IS_ACTIVE),
+                        resultSet.getInt(COL_USER_ROLE_ID));
+                logger.info("Retrieved user.");
+            }
+        } catch (Exception e) {
+            logger.warn(e.getMessage(), e);
+            e.printStackTrace();
+        }
+
+        return user;
+    }
+
+
+    /**
+     * Returns a list of all Users in the database.
+     * @return A User List
+     */
     @Override
     public List<User> getAll() {
         List<User> users = new ArrayList<>();
@@ -104,6 +155,10 @@ public class UserRepository implements MainDAO<User>, DatabaseRef {
         return users;
     }
 
+    /**
+     * Updates a User.
+     * @param user User to update
+     */
     @Override
     public void update(User user) {
 
@@ -134,10 +189,17 @@ public class UserRepository implements MainDAO<User>, DatabaseRef {
         }
     }
 
-    // May not be needed. Use get -> delete(User user)
+    /**
+     * Unused by this repository.
+     * @param id
+     */
     public void updateByID(Integer id) {
     }
 
+    /**
+     * Deletes a User.
+     * @param user User to delete
+     */
     @Override
     public void delete(User user) {
 
@@ -155,7 +217,10 @@ public class UserRepository implements MainDAO<User>, DatabaseRef {
         }
     }
 
-    // May not be needed
+    /**
+     * Unused by this repository.
+     * @param s
+     */
     public void delete(String s) {
 
     }
