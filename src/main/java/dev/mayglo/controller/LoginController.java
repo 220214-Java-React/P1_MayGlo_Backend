@@ -51,11 +51,25 @@ public class LoginController extends HttpServlet
                     else if (DBUser.getRole_ID() == 1) resp.setStatus(201);
                     else if (DBUser.getRole_ID() == 2) resp.setStatus(202);
                 }
-            }
+                
             else    // Otherwise
             {
                 resp.setStatus(205);    // Another code that isn't listed above
             }
+
+//            List<User> users = userService.getAll();
+//
+//            for (User u: users)
+//            {
+//                if (user.getUsername().equals(u.getUsername()))
+//                {
+//                    user = u;
+//                    JSON = mapper.writeValueAsString(user);
+//                    logger.info(JSON);
+//                    resp.setContentType("application/json");
+//                    resp.getOutputStream().println(JSON);
+//                }
+//            }
 
 //            List<User> users = userService.getAll();
 //
