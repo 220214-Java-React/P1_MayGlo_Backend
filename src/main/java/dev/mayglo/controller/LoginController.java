@@ -16,21 +16,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @WebServlet(urlPatterns = "/login.html")
-public class LoginController extends HttpServlet
-{
+public class LoginController extends HttpServlet {
     private static final Logger logger = LogManager.getLogger(UserController.class.getName());
     private final UserService userService = new UserService();
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-    {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println(req.getRequestURI() + " GETTED");    // Just to signify GETs, does what PostMan does
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-    {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // Extract the request payload in JSON form from the BufferedReader on the request object
         String JSON = req.getReader().lines().collect(Collectors.joining());
         User user;
@@ -41,51 +38,22 @@ public class LoginController extends HttpServlet
 
             User DBUser = userService.getByUsername(user.getUsername());    // Find a matching username in database
 
-            if (DBUser != null )      // If a user is found
+            if (DBUser != null)      // If a user is found
             {
-                if ( userService.checkUser(DBUser, user))   // If the password matches
+                if (userService.checkUser(DBUser, user))   // If the password matches
                 {
                     logger.info("Found: " + DBUser);
 
                     if (DBUser.getRole_ID() == 0) resp.setStatus(200);
                     else if (DBUser.getRole_ID() == 1) resp.setStatus(201);
                     else if (DBUser.getRole_ID() == 2) resp.setStatus(202);
+                } else    // Otherwise
+                {
+                    resp.setStatus(205);    // Another code that isn't listed above
                 }
-                
-            else    // Otherwise
-            {
-                resp.setStatus(205);    // Another code that isn't listed above
+
+                logger.info(user.toString());
             }
-
-//            List<User> users = userService.getAll();
-//
-//            for (User u: users)
-//            {
-//                if (user.getUsername().equals(u.getUsername()))
-//                {
-//                    user = u;
-//                    JSON = mapper.writeValueAsString(user);
-//                    logger.info(JSON);
-//                    resp.setContentType("application/json");
-//                    resp.getOutputStream().println(JSON);
-//                }
-//            }
-
-//            List<User> users = userService.getAll();
-//
-//            for (User u: users)
-//            {
-//                if (user.getUsername().equals(u.getUsername()))
-//                {
-//                    user = u;
-//                    JSON = mapper.writeValueAsString(user);
-//                    logger.info(JSON);
-//                    resp.setContentType("application/json");
-//                    resp.getOutputStream().println(JSON);
-//                }
-//            }
-
-            logger.info(user.toString());
         } catch (Exception e) {
             logger.warn(e);
         }
