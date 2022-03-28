@@ -43,10 +43,11 @@ public class LoginController extends HttpServlet {
                 {
                     logger.info("Found: " + DBUser);
 
-                    if (DBUser.getRole_ID() == 0) resp.setStatus(200);
-                    else if (DBUser.getRole_ID() == 1) resp.setStatus(201);
-                    else if (DBUser.getRole_ID() == 2) resp.setStatus(202);
-                } else    // Otherwise
+                    if (DBUser.getRole_ID() == 0) resp.setStatus(201);
+                    else if (DBUser.getRole_ID() == 1) resp.setStatus(202);
+                    else if (DBUser.getRole_ID() == 2) resp.setStatus(203);
+                }
+                else    // Otherwise
                 {
                     resp.setStatus(205);    // Another code that isn't listed above
                 }
