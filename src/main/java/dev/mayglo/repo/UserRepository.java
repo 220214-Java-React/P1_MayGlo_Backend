@@ -51,16 +51,6 @@ public class UserRepository implements MainDAO<User>, DatabaseRef {
     }
 
     /**
-     * Unused by this repository.
-     * @param user
-     * @return
-     */
-    @Override
-    public User get(User user) {
-        return null;
-    }
-
-    /**
      * Gets a User by their ID number.
      * @param id The ID number
      * @return User corresponding with the provided ID number
