@@ -1,3 +1,4 @@
+import dev.mayglo.model.ReimbStatus;
 import dev.mayglo.model.Reimbursement;
 import dev.mayglo.model.User;
 import dev.mayglo.service.ReimbService;
@@ -73,6 +74,8 @@ public class DatabaseTest
         reimbursement.setType_ID(0);
 
         assertNotNull(reimbursement);
+
+        reimbursement.setStatus_ID(ReimbStatus.PENDING.ordinal());
 
         assertDoesNotThrow(()-> reimbService.create(reimbursement));
     }
