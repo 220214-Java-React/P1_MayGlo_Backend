@@ -34,8 +34,9 @@ public class UserService {
      * @param user User to be created
      */
     public void create(User user) {
-        String encryptedPass = encryptPassword(user.getPassword());
-        user.setPassword(encryptedPass);
+        //String encryptedPass = encryptPassword(user.getPassword());
+        //user.setPassword(encryptedPass);
+        user.setIs_Active(true);            // New users are active
         userRepository.create(user);
     }
 
@@ -76,12 +77,24 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    /**
-     * Encrypts a password using Bcrypt.
-     * @param password Password to encrypt
-     * @return Encrypted password
-     */
-    private String encryptPassword(String password){
-        return hasher.hashToString(4, password.toCharArray());
+//    /**
+//     * Encrypts a password using Bcrypt.
+//     * @param password Password to encrypt
+//     * @return Encrypted password
+//     */
+//    private String encryptPassword(String password){
+//        return hasher.hashToString(4, password.toCharArray());
+//    }
+
+
+
+
+    public boolean checkUser(User DBUser, User logUser)
+    {
+        // DBUser is user from database
+        // logUser is user logging in
+        //String encPass = encryptPassword(logUser.getPassword());    // Encrypt password, for comparison
+
+        return DBUser.getPassword().equals(logUser.getPassword());    // Password matches
     }
 }
