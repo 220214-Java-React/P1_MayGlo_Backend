@@ -31,19 +31,24 @@ public class ReimbRepository implements MainDAO<Reimbursement>, DatabaseRef
         try(Connection connection = ConnectionFactory.getConnection())
         {
             // Columns to query
-            columnsToQuery = "(" + COL_REIMB_AMT + ", " + COL_REIMB_SUBMITTED + ", " + COL_REIMB_AUTHOR_ID + ", " + COL_REIMB_TYPE_ID + ")";
+            columnsToQuery = "(" + COL_REIMB_AMT + ", " +   // Amount column
+                    COL_REIMB_SUBMITTED + ", " +            // Time of submission column
+                    COL_REIMB_AUTHOR_ID + ", " +            // Author ID column
+                    COL_REIMB_TYPE_ID + ", " +              // Type ID column
+                    COL_REIMB_STATUS_ID + ")";              // Status ID column
 
             // insert query to reimbursement table
             // insert into reimbursement table (amount, submitted, author id,  type id) values (getAmount, now(), getAuthor_ID, getType_ID)
-            query = "insert into " + REIMB_TABLE + columnsToQuery + " values (?, now(), ?, ?);";
+            query = "insert into " + REIMB_TABLE + columnsToQuery + " values (?, now(), ?, ?, ?);";
 
             // Prepare statement to query
             PreparedStatement stmt = connection.prepareStatement(query);
 
             // Set statement parameters
-            stmt.setDouble(1, reimbursement.getAmount());
-            stmt.setInt(2, reimbursement.getAuthor_ID());
-            stmt.setInt(3, reimbursement.getType_ID());
+            stmt.setDouble(1, reimbursement.getAmount());   // Amount
+            stmt.setInt(2, reimbursement.getAuthor_ID());   // Author ID (user ID)
+            stmt.setInt(3, reimbursement.getType_ID());     // Type ID
+            stmt.setInt(4, reimbursement.getStatus_ID());   // Status ID
 
             // Execute query
             stmt.executeUpdate();
