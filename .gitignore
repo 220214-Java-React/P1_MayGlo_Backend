@@ -12,3 +12,6 @@ out
 gradle
 gradlew
 gradlew.bat
+
+# Environment files
+*.env

@@ -1,7 +1,7 @@
 package dev.mayglo.model;
 
 /**
- * Stores user account information
+ * Stores User account information
  */
 public class User
 {
@@ -19,11 +19,11 @@ public class User
      */
     public User() {}
 
-    // FOR DEBUGGING TO "testusers" DB
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
+									  
+												   
+								 
+								 
+	 
 
     /**
      * Creates a user with minimum parameters for "ERS_USER" table, used for JUNIT testing ------
@@ -45,13 +45,13 @@ public class User
     /**
      * Creates a new User with all required parameters for "ERS_USER" table.
      * Used for new user creation.
-     * @param username
-     * @param password
-     * @param email
-     * @param given_name
-     * @param surname
-     * @param is_Active
-     * @param role_ID
+     * @param username The username of this User
+     * @param password The password of this User
+     * @param email The email of this User
+     * @param given_name The first (given) name of this User
+     * @param surname The surname of this User
+     * @param is_Active The activity status of this User
+     * @param role_ID The role ID of this User
      */
     public User(String username, String password, String email, String given_name, String surname,
                 Boolean is_Active, Integer role_ID) {
@@ -65,7 +65,7 @@ public class User
     }
 
     /**
-     * Creates a new User with all parameters for "ERS_USER" table.
+     * Creates a new User with all parameters for "ERS_USER" table plus the user_ID.
      * Used for querying the database based on user_ID.
      * @param username
      * @param password
@@ -87,41 +87,66 @@ public class User
         this.role_ID = role_ID;
     }
 
-    // GETTERS
+			  
 
+    /**
+     * Gets the user_ID value of a User.
+     * @return This User's user_ID
+     */
     public Integer getID() {
         return user_ID;
     }
-    
+    /**
+     * Gets the username value of a User.
+     * @return This User's username
+     */
     public String getUsername() {
         return username;
     }
-
+    /**
+     * Gets the password value of a User.
+     * @return This User's password
+     */
     public String getPassword() {
         return password;
     }
-
+    /**
+     * Gets the email value of a User.
+     * @return This User's email
+     */
     public String getEmail() {
         return email;
     }
-
+    /**
+     * Gets the given_name value of a User.
+     * @return This User's given_name
+     */
     public String getGiven_name() {
         return given_name;
     }
-
+    /**
+     * Gets the surname value of a User.
+     * @return This User's surname
+     */
     public String getSurname() {
         return surname;
     }
-
+    /**
+     * Gets the is_Active (activity status) value of a User.
+     * @return This User's is_Active value
+     */
     public Boolean getIs_Active() {
         return is_Active;
     }
-    
+    /**
+     * Gets the role_ID value of a User.
+     * @return This User's role_ID
+     */
     public Integer getRole_ID() {
         return role_ID;
     }
 
-    // SETTERS
+			  
 
     public void setUsername(String username) {
         this.username = username;
@@ -161,6 +186,10 @@ public class User
         this.role_ID = updatedUser.getRole_ID();
     }
 
+    /**
+     * Prints a User's information in an easily readable format.
+     * @return A formatted string of all user variables and values
+     */
     @Override
     public String toString() {
         return "user_ID: " + user_ID + "\n" +

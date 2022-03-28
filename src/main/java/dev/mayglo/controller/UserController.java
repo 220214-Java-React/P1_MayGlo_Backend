@@ -2,6 +2,7 @@ package dev.mayglo.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.mayglo.model.User;
+import dev.mayglo.model.UserRole;
 import dev.mayglo.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,8 +16,12 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Provides access to RESTful methods to manipulate Users.
+ */
 @WebServlet(urlPatterns = "/users")
 public class UserController extends HttpServlet {
 
@@ -25,16 +30,20 @@ public class UserController extends HttpServlet {
     private final ObjectMapper mapper = new ObjectMapper();
 
     /**
-     * Requesting a resource
+     * Returns all users by default. Allows the following options via parameters:
+     * <ul>
+     * <li>Search by ID</li>
+     * <li>Search by is_Active</li>
+     * <li>Search by role_ID</li>
+     * </ul>
      *
-     * @param req
-     * @param resp
+     * @param req  Request that was received
+     * @param resp Response to return
      * @throws ServletException
      * @throws IOException
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String JSON = "";
         String byID = req.getParameter("user_id");
         String byis_Active = req.getParameter("is_Active");
@@ -67,6 +76,12 @@ public class UserController extends HttpServlet {
 
         // Search by role_ID
         if (byrole_ID != null) {
+
+            // Show enum text value of role
+            int roleInt = Integer.parseInt(byrole_ID);
+            UserRole enumVal = UserRole.values()[roleInt];
+            logger.debug(enumVal);
+
             List<User> usersByRole = new ArrayList<>();
             for (User user : userService.getAll()) {
                 if (user.getRole_ID().equals(Integer.parseInt(byrole_ID))) {
@@ -96,6 +111,14 @@ public class UserController extends HttpServlet {
         }
     }
 
+    /**
+     * Creates a user.
+     *
+     * @param req  Request that was received
+     * @param resp Response to return
+     * @throws ServletException
+     * @throws IOException
+     */
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String JSON = req.getReader().lines().collect(Collectors.joining());
@@ -112,23 +135,29 @@ public class UserController extends HttpServlet {
         }
     }
 
+    /**
+     * Updates a user by their ID number. The PUT request must include an ID parameter.
+     *
+     * @param req  Request that was received
+     * @param resp Response to return
+     * @throws ServletException
+     * @throws IOException
+     */
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String JSON = req.getReader().lines().collect(Collectors.joining());
-        User user = null;
-
         String updateByID = req.getParameter("update");
 
         // Update an existing user
         if (updateByID != null) {
-            // Parse the ID from the provided string
+            // Parse the integer value of the ID from the provided string
             int userID = Integer.parseInt(updateByID);
 
-            // fill "user" with our new values
+            // Create a temporary User with the new values
             User updatedUser = mapper.readValue(JSON, User.class);
             logger.debug(updatedUser.toString());
 
-            // Get the existing User we want to update
+            // Get the User to be updated
             User accountToUpdate = userService.getByID(userID);
             logger.debug(accountToUpdate.toString());
 
@@ -140,37 +169,29 @@ public class UserController extends HttpServlet {
         }
     }
 
+    /**
+     * Deletes a user by their user_ID.
+     *
+     * @param req  Request that was received
+     * @param resp Response to return
+     * @throws ServletException
+     * @throws IOException
+     */
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        // delete a user:
+        String byID = req.getParameter("id");
+
         String JSON = req.getReader().lines().collect(Collectors.joining());
         User userToDelete = null;
 
-        try {
-            userToDelete = mapper.readValue(JSON, User.class);
+        // Update an existing user
+        if (byID != null) {
+            // Parse the integer value of the ID from the provided string
+            int userID = Integer.parseInt(byID);
 
-            userService.delete(userToDelete);
-
-        } catch (Exception e) {
-            logger.warn(e);
+            // Delete the account
+            userService.delete(userService.getByID(userID));
         }
     }
-
-    // TODO: deactivate a user:
-        /*
-        String JSONUser = req.getReader().lines().collect(Collectors.joining());
-        User userToDeactivate = null;
-
-        try {
-            userToDeactivate = mapper.readValue(JSONUser, User.class);
-            userToDeactivate.setIs_Active(false);
-            userService.update(userToDeactivate);
-
-        } catch (Exception e) {
-            logger.warn(e);
-        }
-
-         */
-
 }
 
