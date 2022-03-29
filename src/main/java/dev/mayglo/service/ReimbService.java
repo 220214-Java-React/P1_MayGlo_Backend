@@ -32,6 +32,16 @@ public class ReimbService
         return reimbRepository.getAll();
     }
 
+    /**
+     * Gets a user's list of reimbursements
+     * @param user_ID The User's ID
+     * @return The list found
+     */
+    public List<Reimbursement> getAllReimbursements(Integer user_ID)
+    {
+        return reimbRepository.getByAuthorID(user_ID);
+    }
+
 //    public Reimbursement getReimbursementByID(Reimbursement reimbursement)
 //    {
 //        return reimbRepository.get(reimbursement);
