@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@WebServlet(urlPatterns = "/reimbursements")
+@WebServlet(urlPatterns = "/reimbursements/*")
 public class ReimbursementController extends HttpServlet
 {
     private static final int CREATED = 201;
@@ -29,9 +29,12 @@ public class ReimbursementController extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
+        String clientID = req.getParameter("user_ID");
+        logger.info(clientID);
+
         List<Reimbursement> reimbursements;
 
-        reimbursements = reimbService.getAllReimbursements(8);  // CHANGE 8 AFTER USER RETRIEVAL COMPLETE
+        reimbursements = reimbService.getAllReimbursements(Integer.parseInt(clientID));  // CHANGE 8 AFTER USER RETRIEVAL COMPLETE
 
         String JSON = mapper.writeValueAsString(reimbursements);
         resp.setContentType("application/json");
