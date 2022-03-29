@@ -146,7 +146,8 @@ public class User
         return role_ID;
     }
 
-			  
+
+    public void setUser_ID(Integer user_ID) {this.user_ID = user_ID;}
 
     public void setUsername(String username) {
         this.username = username;
