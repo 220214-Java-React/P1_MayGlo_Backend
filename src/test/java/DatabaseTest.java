@@ -1,3 +1,4 @@
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.mayglo.model.ReimbStatus;
 import dev.mayglo.model.Reimbursement;
 import dev.mayglo.model.User;
@@ -89,5 +90,15 @@ public class DatabaseTest
         List<Reimbursement> rbs = reimbService.getAllReimbursements();
 
         assertNotNull(rbs);
+    }
+
+    @Test
+    @DisplayName("Test retrieving all reimbursements for a specific user")
+    public void getAllReimbursementsByAuthorID()
+    {
+        ObjectMapper mapper = new ObjectMapper();
+        assertDoesNotThrow(() -> reimbService.getAllReimbursements(8));
+
+        assertDoesNotThrow(() -> mapper.writeValueAsString(reimbService.getAllReimbursements(8)));
     }
 }
