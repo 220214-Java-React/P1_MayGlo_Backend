@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 /**
  * Provides access to RESTful methods to manipulate Users.
  */
-@WebServlet(urlPatterns = "/users")
+@WebServlet(urlPatterns = "/users/*")
 public class UserController extends HttpServlet {
 
     private static final Logger logger = LogManager.getLogger(UserController.class.getName());
@@ -48,6 +48,20 @@ public class UserController extends HttpServlet {
         String byID = req.getParameter("user_id");
         String byis_Active = req.getParameter("is_Active");
         String byrole_ID = req.getParameter("role_ID");
+
+
+        // Search by username
+        String byUsername = req.getParameter("username");
+        if (byUsername != null)
+        {
+            User userByUsername = userService.getByUsername(byUsername);    // Get user object
+            logger.debug(userByUsername.toString());                        // Log what was found
+            JSON = mapper.writeValueAsString(userByUsername);               // Marshall into JSON
+            resp.setContentType("application/json");                        // Set Content Type
+            resp.setStatus(200);                                            // Set Status
+            resp.getOutputStream().println(JSON);                           // Send User back to client
+        }
+
 
         // Search by ID
         if (byID != null) {
@@ -94,7 +108,7 @@ public class UserController extends HttpServlet {
             resp.setStatus(200);
             resp.getOutputStream().println(JSON);
 
-        } else if (byID == null && byis_Active == null && byrole_ID == null) {
+        } else if (byUsername == null && byID == null && byis_Active == null && byrole_ID == null) {
 
             try {
                 List<User> users = userService.getAll();

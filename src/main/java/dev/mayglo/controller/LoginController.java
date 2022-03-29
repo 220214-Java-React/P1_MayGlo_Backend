@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @WebServlet(urlPatterns = "/login.html")
 public class LoginController extends HttpServlet {
-    private static final Logger logger = LogManager.getLogger(UserController.class.getName());
+    private static final Logger logger = LogManager.getLogger(LoginController.class.getName());
     private final UserService userService = new UserService();
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -43,9 +43,8 @@ public class LoginController extends HttpServlet {
                 {
                     logger.info("Found: " + DBUser);
 
-                    if (DBUser.getRole_ID() == 0) resp.setStatus(201);
-                    else if (DBUser.getRole_ID() == 1) resp.setStatus(202);
-                    else if (DBUser.getRole_ID() == 2) resp.setStatus(203);
+                    JSON = mapper.writeValueAsString(DBUser);
+                    resp.getOutputStream().println(JSON);
                 }
                 else    // Otherwise
                 {
