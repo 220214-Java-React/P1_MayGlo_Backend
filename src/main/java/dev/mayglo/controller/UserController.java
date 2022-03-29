@@ -137,6 +137,7 @@ public class UserController extends HttpServlet {
 
         String JSON = req.getReader().lines().collect(Collectors.joining());
         User user = null;
+        logger.info(JSON);
 
         try {
             // Unmarshall the JSON string into a Java instance of the User class
@@ -159,8 +160,8 @@ public class UserController extends HttpServlet {
      */
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String JSON = req.getReader().lines().collect(Collectors.joining());
-        String updateByID = req.getParameter("update");
+        String JSON = req.getReader().lines().collect(Collectors.joining());     // What's read from request
+        String updateByID = req.getParameter("update");                     // Parameter during PUT request
 
         // Update an existing user
         if (updateByID != null) {
@@ -169,6 +170,7 @@ public class UserController extends HttpServlet {
 
             // Create a temporary User with the new values
             User updatedUser = mapper.readValue(JSON, User.class);
+            updatedUser.setUser_ID(userID);             // Set User ID
             logger.debug(updatedUser.toString());
 
             // Get the User to be updated
@@ -180,6 +182,7 @@ public class UserController extends HttpServlet {
 
             // Update the account
             userService.update(accountToUpdate);
+            resp.setStatus(200);    // Set Response status
         }
     }
 
@@ -205,6 +208,7 @@ public class UserController extends HttpServlet {
 
             // Delete the account
             userService.delete(userService.getByID(userID));
+            resp.setStatus(200);
         }
     }
 }
