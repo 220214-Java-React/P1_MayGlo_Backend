@@ -1,5 +1,6 @@
 package dev.mayglo.service;
 
+import dev.mayglo.model.ReimbStatus;
 import dev.mayglo.model.Reimbursement;
 import dev.mayglo.repo.ReimbRepository;
 
@@ -20,12 +21,25 @@ public class ReimbService
 
     public void create(Reimbursement reimbursement)
     {
-        reimbRepository.create(reimbursement);
+        reimbursement.setAuthor_ID(8);  // 8 = EmployeeUser in Database --------DELETE LINE AFTER USER RETRIEVAL COMPLETE
+
+        reimbursement.setStatus_ID(ReimbStatus.PENDING.ordinal());  // Set status to pending
+        reimbRepository.create(reimbursement);                      // Persist object
     }
 
     public List<Reimbursement> getAllReimbursements()
     {
         return reimbRepository.getAll();
+    }
+
+    /**
+     * Gets a user's list of reimbursements
+     * @param user_ID The User's ID
+     * @return The list found
+     */
+    public List<Reimbursement> getAllReimbursements(Integer user_ID)
+    {
+        return reimbRepository.getByAuthorID(user_ID);
     }
 
 //    public Reimbursement getReimbursementByID(Reimbursement reimbursement)

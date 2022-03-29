@@ -1,3 +1,5 @@
+import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.mayglo.model.ReimbStatus;
 import dev.mayglo.model.Reimbursement;
 import dev.mayglo.model.User;
 import dev.mayglo.service.ReimbService;
@@ -74,6 +76,8 @@ public class DatabaseTest
 
         assertNotNull(reimbursement);
 
+        reimbursement.setStatus_ID(ReimbStatus.PENDING.ordinal());
+
         assertDoesNotThrow(()-> reimbService.create(reimbursement));
     }
 
@@ -86,5 +90,15 @@ public class DatabaseTest
         List<Reimbursement> rbs = reimbService.getAllReimbursements();
 
         assertNotNull(rbs);
+    }
+
+    @Test
+    @DisplayName("Test retrieving all reimbursements for a specific user")
+    public void getAllReimbursementsByAuthorID()
+    {
+        ObjectMapper mapper = new ObjectMapper();
+        assertDoesNotThrow(() -> reimbService.getAllReimbursements(8));
+
+        assertDoesNotThrow(() -> mapper.writeValueAsString(reimbService.getAllReimbursements(8)));
     }
 }
