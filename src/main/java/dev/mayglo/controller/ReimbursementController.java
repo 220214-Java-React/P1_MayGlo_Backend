@@ -34,7 +34,7 @@ public class ReimbursementController extends HttpServlet
 
         List<Reimbursement> reimbursements;
 
-        reimbursements = reimbService.getAllReimbursements(Integer.parseInt(clientID));  // CHANGE 8 AFTER USER RETRIEVAL COMPLETE
+        reimbursements = reimbService.getAllReimbursements(Integer.parseInt(clientID));
 
         String JSON = mapper.writeValueAsString(reimbursements);
         resp.setContentType("application/json");
@@ -48,11 +48,13 @@ public class ReimbursementController extends HttpServlet
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         String JSON = req.getReader().lines().collect(Collectors.joining());    // Extract request into JSON form (String object)
+        String clientID = req.getParameter("userID");
         Reimbursement reimb;    // Declare Reimbursement object
 
         try
         {
             reimb = mapper.readValue(JSON, Reimbursement.class);    // Map request info to Reimbursement object
+            reimb.setAuthor_ID(Integer.parseInt(clientID));         // Set Author
             reimbService.create(reimb);         // Create a reimbursement and persist it to database
             resp.setStatus(CREATED);            // Tell client reimbursement was created
         }

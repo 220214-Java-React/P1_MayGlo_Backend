@@ -21,8 +21,6 @@ public class ReimbService
 
     public void create(Reimbursement reimbursement)
     {
-        reimbursement.setAuthor_ID(8);  // 8 = EmployeeUser in Database --------DELETE LINE AFTER USER RETRIEVAL COMPLETE
-
         reimbursement.setStatus_ID(ReimbStatus.PENDING.ordinal());  // Set status to pending
         reimbRepository.create(reimbursement);                      // Persist object
     }
