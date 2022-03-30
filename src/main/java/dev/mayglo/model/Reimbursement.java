@@ -30,6 +30,8 @@ public class Reimbursement
     // private Integer payment_ID;  --- future implementation
     private Integer author_ID;
     private Integer resolver_ID;
+    private String authorName;
+    private String resolverName;
     private Integer status_ID;
     private Integer type_ID;
 
@@ -70,6 +72,31 @@ public class Reimbursement
         this.type_ID = type_ID;
     }
 
+    /**
+     * Constructor --> Creates a reimbursement object based on parameters for "ERS_REIMBURSEMENT" table
+     * @param reimb_ID ID of this reimbursement
+     * @param amount Amount of this reimbursement
+     * @param timeSubmitted Time of submission
+     * @param timeResolved Time of resolution
+     * @param description Description of reimbursement
+     * @param authorName Name of author
+     * @param resolverName Name of resolver
+     * @param status_ID ID of reimbursement status
+     * @param type_ID ID of reimbursement type
+     */
+    public Reimbursement(Integer reimb_ID, Double amount, String timeSubmitted, String timeResolved, String description, String authorName, String resolverName, Integer status_ID, Integer type_ID)
+    {
+        this.reimb_ID = reimb_ID;
+        this.amount = amount;
+        this.timeSubmitted = timeSubmitted;
+        this.timeResolved = timeResolved;
+        this.description = description;
+        this.authorName = authorName;
+        this.resolverName = resolverName;
+        this.status_ID = status_ID;
+        this.type_ID = type_ID;
+    }
+
     // GETTERS
 
     public Integer getReimb_ID()
@@ -105,6 +132,16 @@ public class Reimbursement
     public Integer getResolver_ID()
     {
         return resolver_ID;
+    }
+
+    public String getAuthorName()
+    {
+        return authorName;
+    }
+
+    public String getResolverName()
+    {
+        return resolverName;
     }
 
     public Integer getStatus_ID()
@@ -153,6 +190,16 @@ public class Reimbursement
     public void setResolver_ID(Integer resolver_ID)
     {
         this.resolver_ID = resolver_ID;
+    }
+
+    public void setAuthorName(String authorName)
+    {
+        this.authorName = authorName;
+    }
+
+    public void setResolverName(String resolverName)
+    {
+        this.resolverName = resolverName;
     }
 
     public void setStatus_ID(Integer status_ID)
