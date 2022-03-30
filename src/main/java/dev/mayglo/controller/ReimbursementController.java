@@ -29,22 +29,6 @@ public class ReimbursementController extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
-
-        int cuRole = LoginController.currentUser.getRole_ID();
-        switch (cuRole) {
-            case 0:
-                // Employee. Get only those associated with this user
-                //reimbService.getByUsername(LoginController.currentUser.getUsername());
-                break;
-            case 1:
-                // Manager. Get all.
-                reimbService.getAllReimbursements();
-
-            case 2:
-                // Admin. Same as above.
-                break;
-        }
-
         String clientID = req.getParameter("user_ID");
         logger.info(clientID);
 

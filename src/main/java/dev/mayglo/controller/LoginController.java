@@ -1,3 +1,4 @@
+
 package dev.mayglo.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,23 +20,10 @@ public class LoginController extends HttpServlet {
     private static final Logger logger = LogManager.getLogger(LoginController.class.getName());
     private final UserService userService = new UserService();
     private final ObjectMapper mapper = new ObjectMapper();
-    public static User currentUser = new User();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String logOut = req.getParameter("logout");
-
-        // Log out
-        if (logOut != null)
-        {
-            logger.debug(currentUser.getUsername() + " logged out");
-            currentUser = new User();
-            resp.setContentType("text/plain");
-            resp.getOutputStream().println("Logged out.");
-        } else {
-            System.out.println(req.getRequestURI() + " GET'd");    // Just to signify GETs, does what PostMan does
-        }
-
+        System.out.println(req.getRequestURI() + " GETTED");    // Just to signify GETs, does what PostMan does
     }
 
     @Override
@@ -55,9 +43,8 @@ public class LoginController extends HttpServlet {
                 if (userService.checkUser(DBUser, user))   // If the password matches
                 {
                     logger.info("Found: " + DBUser);
-                    currentUser = DBUser;
+
                     JSON = mapper.writeValueAsString(DBUser);
-                    resp.setStatus(201);
                     resp.getOutputStream().println(JSON);
                 }
                 else    // Otherwise
