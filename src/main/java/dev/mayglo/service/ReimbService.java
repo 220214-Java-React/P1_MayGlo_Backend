@@ -30,6 +30,11 @@ public class ReimbService
         return reimbRepository.getAll();
     }
 
+    public List<Reimbursement> getAllForManagers()
+    {
+        return reimbRepository.getAllForManagers();
+    }
+
     /**
      * Gets a user's list of reimbursements
      * @param user_ID The User's ID
