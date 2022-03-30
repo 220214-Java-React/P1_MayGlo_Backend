@@ -26,19 +26,33 @@ public class ReimbursementController extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
-        String clientID = req.getParameter("user_ID");
+        String clientID = req.getParameter("user_ID");  // User ID
+        String role_ID = req.getParameter("role_ID");   // Role ID
         logger.info(clientID);
-
         List<Reimbursement> reimbursements;
 
-        reimbursements = reimbService.getByAuthorID(Integer.parseInt(clientID));
+        if (role_ID.equals("0")) // If it is an employee
+        {
+            reimbursements = reimbService.getByAuthorID(Integer.parseInt(clientID));    // Get reimbursements via ID
 
-        String JSON = mapper.writeValueAsString(reimbursements);
-        resp.setContentType("application/json");
-        resp.setStatus(200);
-        resp.getOutputStream().println(JSON);
+            String JSON = mapper.writeValueAsString(reimbursements);    // Marshall into JSON
+            resp.setContentType("application/json");                    // Set content type
+            resp.setStatus(200);                                        // Set Status
+            resp.getOutputStream().println(JSON);                       // Send reimbursements to frontend
 
-        logger.info(JSON);
+            logger.info(JSON);
+        }
+        else        // It is a manager
+        {
+            reimbursements = reimbService.getAllForManagers();          // Get all reimbursements
+
+            String JSON = mapper.writeValueAsString(reimbursements);    // Marshall into JSON
+            resp.setContentType("application/json");                    // Set content type
+            resp.setStatus(200);                                        // Set status
+            resp.getOutputStream().println(JSON);                       // Send to frontend
+
+            logger.info(JSON);
+        }
     }
 
     @Override
