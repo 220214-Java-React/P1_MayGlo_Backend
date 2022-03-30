@@ -165,6 +165,76 @@ public class ReimbRepository implements MainDAO<Reimbursement>, DatabaseRef
 
         return reimbs;  // Null or list of reimbursements
     }
+    public List<Reimbursement> getAllForManagers()
+    {
+        List<Reimbursement> reimbs = null;
+
+        try (Connection connection = ConnectionFactory.getConnection())
+        {
+            final String USER_TABLE_1 = "eu";   // Alias for user table
+            final String USER_TABLE_2 = "eu2";  // Alias for second user table
+            final String ALIAS_AUTHOR = "authorName";
+            final String ALIAS_RESOLVER = "resolverName";
+
+            // Columns to include in query
+            columnsToQuery = REIMB_TABLE + "." + COL_REIMB_ID + ", " +
+                    REIMB_TABLE + "." + COL_REIMB_AMT + ", " +
+                    REIMB_TABLE + "." + COL_REIMB_SUBMITTED + ", " +
+                    REIMB_TABLE + "." + COL_REIMB_RESOLVED + ", " +
+                    REIMB_TABLE + "." + COL_REIMB_DESC + ", " +
+                    USER_TABLE_1 + "." + COL_USER_GIVEN_NAME + " as " + ALIAS_AUTHOR + ", " +
+                    USER_TABLE_2 + "." + COL_USER_GIVEN_NAME + " as " + ALIAS_RESOLVER + ", " +
+                    REIMB_TABLE + "." + COL_REIMB_STATUS_ID + ", " +
+                    REIMB_TABLE + "." + COL_REIMB_TYPE_ID;
+
+            // Join tables
+            final String JOIN_QUERY = " left join " + USER_TABLE + " as " + USER_TABLE_1 +
+                    " on " + REIMB_TABLE + "." + COL_REIMB_AUTHOR_ID + " = " + USER_TABLE_1 + "." + COL_USER_ID +
+                    " left join " + USER_TABLE + " as " + USER_TABLE_2 +
+                    " on " + REIMB_TABLE + "." + COL_REIMB_RESOLVER_ID + " = " + USER_TABLE_2 + "." + COL_USER_ID  + ";";
+
+            // select query to get all reimbursements
+            // Query the reimbursement table with names in place of the author_ID and resolver_ID
+            query = "select " + columnsToQuery +
+                    " from " + REIMB_TABLE + JOIN_QUERY;
+
+            logger.debug(query);
+
+            // Create statement to query
+            PreparedStatement stmt = connection.prepareStatement(query);
+
+            // Get results from query
+            ResultSet rs = stmt.executeQuery();
+
+            // Read all records found
+            while(rs.next())
+            {
+                // Instantiate object
+                if (reimbs == null) reimbs = new ArrayList<>();
+
+                // Add to list
+                reimbs.add(new Reimbursement(
+                        rs.getInt(COL_REIMB_ID),            // ID
+                        rs.getDouble(COL_REIMB_AMT),        // Amount
+                        rs.getString(COL_REIMB_SUBMITTED),  // Time Submitted
+                        rs.getString(COL_REIMB_RESOLVED),   // Time Resolved
+                        rs.getString(COL_REIMB_DESC),       // Description
+                        rs.getString(ALIAS_AUTHOR),         // Author Name
+                        rs.getString(ALIAS_RESOLVER),       // Resolver Name
+                        rs.getInt(COL_REIMB_STATUS_ID),     // Status ID
+                        rs.getInt(COL_REIMB_TYPE_ID)        // Type ID
+                ));
+            }
+        }
+
+        catch (SQLException | ClassNotFoundException e)
+        {
+            // Log exceptions
+            logger.warn(e);
+        }
+
+        return reimbs;  // Null or list of reimbursements
+    }
 
     /**
      * Gets a reimbursement based on its author's ID
