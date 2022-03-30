@@ -85,9 +85,9 @@ public class DatabaseTest
     @DisplayName("Test retrieving all reimbursements in database")
     public void getAllReimbursementsFromDatabase()
     {
-        assertDoesNotThrow(()->reimbService.getAllReimbursements());
+        assertDoesNotThrow(()->reimbService.getAll());
 
-        List<Reimbursement> rbs = reimbService.getAllReimbursements();
+        List<Reimbursement> rbs = reimbService.getAll();
 
         assertNotNull(rbs);
     }
@@ -97,8 +97,8 @@ public class DatabaseTest
     public void getAllReimbursementsByAuthorID()
     {
         ObjectMapper mapper = new ObjectMapper();
-        assertDoesNotThrow(() -> reimbService.getAllReimbursements(8));
+        assertDoesNotThrow(() -> reimbService.getByAuthorID(8));
 
-        assertDoesNotThrow(() -> mapper.writeValueAsString(reimbService.getAllReimbursements(8)));
+        assertDoesNotThrow(() -> mapper.writeValueAsString(reimbService.getByAuthorID(8)));
     }
 }

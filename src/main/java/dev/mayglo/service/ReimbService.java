@@ -25,7 +25,7 @@ public class ReimbService
         reimbRepository.create(reimbursement);                      // Persist object
     }
 
-    public List<Reimbursement> getAllReimbursements()
+    public List<Reimbursement> getAll()
     {
         return reimbRepository.getAll();
     }
@@ -35,7 +35,7 @@ public class ReimbService
      * @param user_ID The User's ID
      * @return The list found
      */
-    public List<Reimbursement> getAllReimbursements(Integer user_ID)
+    public List<Reimbursement> getByAuthorID(Integer user_ID)
     {
         return reimbRepository.getByAuthorID(user_ID);
     }

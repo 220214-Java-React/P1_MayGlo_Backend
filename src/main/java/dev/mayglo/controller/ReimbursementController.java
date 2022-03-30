@@ -2,9 +2,7 @@ package dev.mayglo.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.mayglo.model.Reimbursement;
-import dev.mayglo.model.User;
 import dev.mayglo.service.ReimbService;
-import dev.mayglo.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +31,7 @@ public class ReimbursementController extends HttpServlet
 
         List<Reimbursement> reimbursements;
 
-        reimbursements = reimbService.getAllReimbursements(Integer.parseInt(clientID));
+        reimbursements = reimbService.getByAuthorID(Integer.parseInt(clientID));
 
         String JSON = mapper.writeValueAsString(reimbursements);
         resp.setContentType("application/json");
