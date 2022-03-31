@@ -28,7 +28,12 @@ public class ReimbursementController extends HttpServlet
     {
         String clientID = req.getParameter("user_ID");  // User ID
         String role_ID = req.getParameter("role_ID");   // Role ID
+        String pending = req.getParameter("pending");
         logger.info(clientID);
+        logger.info(pending);
+
+        int getPending = Integer.parseInt(pending);
+
         List<Reimbursement> reimbursements;
 
         if (role_ID.equals("0")) // If it is an employee
@@ -44,7 +49,7 @@ public class ReimbursementController extends HttpServlet
         }
         else        // It is a manager
         {
-            reimbursements = reimbService.getAllForManagers();          // Get all reimbursements
+            reimbursements = reimbService.getAllForManagers(getPending);          // Get all reimbursements
 
             String JSON = mapper.writeValueAsString(reimbursements);    // Marshall into JSON
             resp.setContentType("application/json");                    // Set content type
