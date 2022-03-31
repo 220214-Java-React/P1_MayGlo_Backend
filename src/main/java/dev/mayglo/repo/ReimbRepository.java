@@ -198,8 +198,6 @@ public class ReimbRepository implements MainDAO<Reimbursement>, DatabaseRef
             query = "select " + columnsToQuery +
                     " from " + REIMB_TABLE + JOIN_QUERY;
 
-            logger.debug(query);
-
             // Create statement to query
             PreparedStatement stmt = connection.prepareStatement(query);
 
@@ -307,7 +305,7 @@ public class ReimbRepository implements MainDAO<Reimbursement>, DatabaseRef
                     " set " + COL_REIMB_AMT + " = ?," +     // Amount
                     COL_REIMB_DESC + " = ?," +              // Description
                     COL_REIMB_TYPE_ID + " = ?" +            // Type
-                    " where " + COL_REIMB_ID + "= ?;";      // ID
+                    " where " + COL_REIMB_ID + " = ?;";      // ID
 
             // Create statement to query
             PreparedStatement stmt = connection.prepareStatement(query);
@@ -317,6 +315,39 @@ public class ReimbRepository implements MainDAO<Reimbursement>, DatabaseRef
             stmt.setString(2, reimbursement.getDescription());
             stmt.setInt(3, reimbursement.getType_ID());
             stmt.setInt(4, reimbursement.getReimb_ID());
+
+            // Execute query
+            stmt.executeUpdate();
+        }
+        catch (SQLException | ClassNotFoundException e)
+        {
+            // Log exceptions
+            logger.warn(e);
+        }
+    }
+
+    public void updateResolved(Reimbursement reimbursement)
+    {
+        if (reimbursement.getReimb_ID() == 0)
+        {
+            logger.warn("Object has no ID");
+            return;
+        }
+
+        try (Connection connection = ConnectionFactory.getConnection())
+        {
+            // update query to change an existing reimbursement
+            // update reimbursement table set amount, description and type where reimbursement id matches
+            query = "update " + REIMB_TABLE +                       // Only managers will update these fields:
+                    " set " + COL_REIMB_RESOLVER_ID + " = ?" +     // Resolver ID
+                    " where " + COL_REIMB_ID + " = ?;";             // ID
+
+            // Create statement to query
+            PreparedStatement stmt = connection.prepareStatement(query);
+
+            // Set statement parameters
+            stmt.setInt(1, reimbursement.getResolver_ID());
+            stmt.setInt(2, reimbursement.getReimb_ID());
 
             // Execute query
             stmt.executeUpdate();
