@@ -36,7 +36,7 @@ public class UserService {
     public void create(User user) {
         //String encryptedPass = encryptPassword(user.getPassword());
         //user.setPassword(encryptedPass);
-        user.setIs_Active(true);            // New users are active
+        user.setIs_Active(false);            // New users are active
         userRepository.create(user);
     }
 

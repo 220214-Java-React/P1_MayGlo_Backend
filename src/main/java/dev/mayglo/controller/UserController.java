@@ -144,7 +144,7 @@ public class UserController extends HttpServlet {
             user = mapper.readValue(JSON, User.class);
             userService.create(user);
             logger.debug(user.toString());
-            resp.setStatus(204);
+            resp.setStatus(201);
         } catch (Exception e) {
             logger.warn(e);
         }

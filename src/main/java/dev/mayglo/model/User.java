@@ -19,12 +19,6 @@ public class User
      */
     public User() {}
 
-									  
-												   
-								 
-								 
-	 
-
     /**
      * Creates a user with minimum parameters for "ERS_USER" table, used for JUNIT testing ------
      * @param username
