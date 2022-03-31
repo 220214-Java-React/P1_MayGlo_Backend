@@ -74,4 +74,28 @@ public class ReimbursementController extends HttpServlet
             logger.warn(e);
         }
     }
+
+    // At this time, only managers use this to update reimbursements for approvals/denials
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    {
+        String JSON = req.getReader().lines().collect(Collectors.joining());    // Extract request into JSON form (String object)
+        String clientID = req.getParameter("user_ID");
+        logger.info(JSON);
+
+        Reimbursement reimb;
+
+        try
+        {
+            reimb  = mapper.readValue(JSON, Reimbursement.class);
+            reimb = reimbService.getReimbursementByID(reimb.getReimb_ID());
+            reimb.setResolver_ID(Integer.parseInt(clientID));
+            reimbService.updateResolved(reimb);
+            resp.setStatus(200);
+        }
+        catch (Exception e)
+        {
+            logger.warn(e);
+        }
+    }
 }
