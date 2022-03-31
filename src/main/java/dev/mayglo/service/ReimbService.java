@@ -30,6 +30,11 @@ public class ReimbService
         return reimbRepository.getAll();
     }
 
+    public List<Reimbursement> getAllForManagers()
+    {
+        return reimbRepository.getAllForManagers();
+    }
+
     /**
      * Gets a user's list of reimbursements
      * @param user_ID The User's ID
@@ -40,9 +45,15 @@ public class ReimbService
         return reimbRepository.getByAuthorID(user_ID);
     }
 
-//    public Reimbursement getReimbursementByID(Reimbursement reimbursement)
-//    {
-//        return reimbRepository.get(reimbursement);
-//    }
+    public Reimbursement getReimbursementByID(Integer id)
+    {
+        return reimbRepository.getByID(id);
+    }
+
+    // For managers to update with approvals/denials
+    public void updateResolved(Reimbursement reimbursement)
+    {
+        reimbRepository.updateResolved(reimbursement);
+    }
 
 }
