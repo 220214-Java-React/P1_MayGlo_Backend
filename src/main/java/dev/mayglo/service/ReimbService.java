@@ -4,6 +4,7 @@ import dev.mayglo.model.ReimbStatus;
 import dev.mayglo.model.Reimbursement;
 import dev.mayglo.repo.ReimbRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,9 +31,27 @@ public class ReimbService
         return reimbRepository.getAll();
     }
 
-    public List<Reimbursement> getAllForManagers()
+    public List<Reimbursement> getAllForManagers(int pending)
     {
-        return reimbRepository.getAllForManagers();
+        List<Reimbursement> tempReimb = reimbRepository.getAllForManagers();
+        List<Reimbursement> transferReimb = new ArrayList<>();
+
+        if (pending == 1)
+        {
+            for (Reimbursement r: tempReimb)
+            {
+                if (r.getStatus_ID() == 0) transferReimb.add(r);
+            }
+        }
+        else
+        {
+            for (Reimbursement r: tempReimb)
+            {
+                if (r.getStatus_ID() != 0) transferReimb.add(r);
+            }
+        }
+
+        return transferReimb;
     }
 
     /**
