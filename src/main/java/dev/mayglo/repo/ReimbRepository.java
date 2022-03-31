@@ -339,7 +339,8 @@ public class ReimbRepository implements MainDAO<Reimbursement>, DatabaseRef
             // update query to change an existing reimbursement
             // update reimbursement table set amount, description and type where reimbursement id matches
             query = "update " + REIMB_TABLE +                       // Only managers will update these fields:
-                    " set " + COL_REIMB_RESOLVER_ID + " = ?" +     // Resolver ID
+                    " set " + COL_REIMB_RESOLVER_ID + " = ?," +     // Resolver ID
+                    " " + COL_REIMB_STATUS_ID + " = ?" +            // Status ID
                     " where " + COL_REIMB_ID + " = ?;";             // ID
 
             // Create statement to query
@@ -347,7 +348,8 @@ public class ReimbRepository implements MainDAO<Reimbursement>, DatabaseRef
 
             // Set statement parameters
             stmt.setInt(1, reimbursement.getResolver_ID());
-            stmt.setInt(2, reimbursement.getReimb_ID());
+            stmt.setInt(2, reimbursement.getStatus_ID());
+            stmt.setInt(3, reimbursement.getReimb_ID());
 
             // Execute query
             stmt.executeUpdate();

@@ -93,7 +93,9 @@ public class ReimbursementController extends HttpServlet
         try
         {
             reimb  = mapper.readValue(JSON, Reimbursement.class);
+            int tempStatus = reimb.getStatus_ID();
             reimb = reimbService.getReimbursementByID(reimb.getReimb_ID());
+            reimb.setStatus_ID(tempStatus);
             reimb.setResolver_ID(Integer.parseInt(clientID));
             reimbService.updateResolved(reimb);
             resp.setStatus(200);
