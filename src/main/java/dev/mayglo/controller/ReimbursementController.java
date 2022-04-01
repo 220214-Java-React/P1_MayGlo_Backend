@@ -28,27 +28,38 @@ public class ReimbursementController extends HttpServlet
     {
         String clientID = req.getParameter("user_ID");  // User ID
         String role_ID = req.getParameter("role_ID");   // Role ID
-        String pending = req.getParameter("pending");
+        String reimbToGet = req.getParameter("reimb_ID");   // Reimbursement ID
         logger.info(clientID);
-        logger.info(pending);
-
-        int getPending = Integer.parseInt(pending);
 
         List<Reimbursement> reimbursements;
 
         if (role_ID.equals("0")) // If it is an employee
         {
-            reimbursements = reimbService.getByAuthorID(Integer.parseInt(clientID));    // Get reimbursements via ID
+            if (reimbToGet == null)
+            {
+                reimbursements = reimbService.getByAuthorID(Integer.parseInt(clientID));    // Get reimbursements via ID
 
-            String JSON = mapper.writeValueAsString(reimbursements);    // Marshall into JSON
-            resp.setContentType("application/json");                    // Set content type
-            resp.setStatus(200);                                        // Set Status
-            resp.getOutputStream().println(JSON);                       // Send reimbursements to frontend
+                String JSON = mapper.writeValueAsString(reimbursements);    // Marshall into JSON
+                resp.setContentType("application/json");                    // Set content type
+                resp.setStatus(200);                                        // Set Status
+                resp.getOutputStream().println(JSON);                       // Send reimbursements to frontend
 
-            logger.info(JSON);
+                logger.info(JSON);
+            }
+            else
+            {
+                Reimbursement reimbursement = reimbService.getReimbursementByID(Integer.parseInt(reimbToGet));  // Get reimbursement needed
+                String JSON = mapper.writeValueAsString(reimbursement);     // Marshall it
+                resp.setContentType("application/json");                    // Set content type
+                resp.setStatus(200);                                        // Set status
+                resp.getOutputStream().println(JSON);                       // Send reimbursement to frontend
+            }
         }
         else        // It is a manager
         {
+            String pending = req.getParameter("pending");       // Pending parameter
+            int getPending = Integer.parseInt(pending);             // Get only the pending reimbursements?
+
             reimbursements = reimbService.getAllForManagers(getPending);          // Get all reimbursements
 
             String JSON = mapper.writeValueAsString(reimbursements);    // Marshall into JSON
@@ -85,20 +96,30 @@ public class ReimbursementController extends HttpServlet
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         String JSON = req.getReader().lines().collect(Collectors.joining());    // Extract request into JSON form (String object)
-        String clientID = req.getParameter("user_ID");
+        String clientID = req.getParameter("user_ID");  // User ID param
+        String role_ID = req.getParameter("role_ID");   // Role ID param
         logger.info(JSON);
 
         Reimbursement reimb;
 
         try
         {
-            reimb  = mapper.readValue(JSON, Reimbursement.class);
-            int tempStatus = reimb.getStatus_ID();
-            reimb = reimbService.getReimbursementByID(reimb.getReimb_ID());
-            reimb.setStatus_ID(tempStatus);
-            reimb.setResolver_ID(Integer.parseInt(clientID));
-            reimbService.updateResolved(reimb);
-            resp.setStatus(200);
+            if (role_ID.equals("0"))    // If it's an employee
+            {
+                reimb  = mapper.readValue(JSON, Reimbursement.class);   // Unmarshall
+                reimbService.updateEmployeeReimb(reimb);    // Update it with values from front end
+                resp.setStatus(200);                        // Set status
+            }
+            else        // It's a manager
+            {
+                reimb  = mapper.readValue(JSON, Reimbursement.class);               // Unmarshall
+                int tempStatus = reimb.getStatus_ID();                              // Store status
+                reimb = reimbService.getReimbursementByID(reimb.getReimb_ID());     // Find matching reimbursement in database
+                reimb.setStatus_ID(tempStatus);                                     // Set status of reimbursement
+                reimb.setResolver_ID(Integer.parseInt(clientID));                   // Set resolver ID of reimbursement
+                reimbService.updateResolved(reimb);                                 // Update reimbursement
+                resp.setStatus(200);                                                // Set status
+            }
         }
         catch (Exception e)
         {
