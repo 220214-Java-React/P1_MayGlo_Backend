@@ -75,4 +75,9 @@ public class ReimbService
         reimbRepository.updateResolved(reimbursement);
     }
 
+    public void updateEmployeeReimb(Reimbursement reimbursement)
+    {
+        reimbRepository.update(reimbursement);
+    }
+
 }
