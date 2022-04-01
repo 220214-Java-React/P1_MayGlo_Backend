@@ -170,7 +170,9 @@ public class UserController extends HttpServlet {
 
             // Create a temporary User with the new values
             User updatedUser = mapper.readValue(JSON, User.class);
-            updatedUser.setUser_ID(userID);             // Set User ID
+            updatedUser.setUser_ID(userID);
+            String encryptedPassword = userService.encryptPassword(updatedUser.getPassword());
+            updatedUser.setPassword(encryptedPassword);
             logger.debug(updatedUser.toString());
 
             // Get the User to be updated

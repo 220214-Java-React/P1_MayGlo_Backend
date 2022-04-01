@@ -6,6 +6,7 @@ import dev.mayglo.repo.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -17,6 +18,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final Logger logger;
     private final BCrypt.Hasher hasher;
+    private final String SALT = ".168FfhW$eoPl!2d";
 
     /**
      * Initializes the UserService class. Includes a logger, a Bcrypt hasher, and a reference to the UserRepository.
@@ -34,8 +36,8 @@ public class UserService {
      * @param user User to be created
      */
     public void create(User user) {
-        //String encryptedPass = encryptPassword(user.getPassword());
-        //user.setPassword(encryptedPass);
+        String encryptedPass = encryptPassword(user.getPassword());
+        user.setPassword(encryptedPass);
         user.setIs_Active(false);            // New users are active
         userRepository.create(user);
     }
@@ -77,24 +79,17 @@ public class UserService {
         userRepository.delete(user);
     }
 
-//    /**
-//     * Encrypts a password using Bcrypt.
-//     * @param password Password to encrypt
-//     * @return Encrypted password
-//     */
-//    private String encryptPassword(String password){
-//        return hasher.hashToString(4, password.toCharArray());
-//    }
-
-
-
+    public String encryptPassword(String password){
+        return new String(
+                hasher.hash(4, SALT.getBytes(StandardCharsets.UTF_8),
+                        password.getBytes(StandardCharsets.UTF_8)),
+                StandardCharsets.UTF_8);
+    }
 
     public boolean checkUser(User DBUser, User logUser)
     {
         // DBUser is user from database
         // logUser is user logging in
-        //String encPass = encryptPassword(logUser.getPassword());    // Encrypt password, for comparison
-
-        return DBUser.getPassword().equals(logUser.getPassword());    // Password matches
+        return DBUser.getPassword().equals(encryptPassword(logUser.getPassword()));    // Password matches
     }
 }
