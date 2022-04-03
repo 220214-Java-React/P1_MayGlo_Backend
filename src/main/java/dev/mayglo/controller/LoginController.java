@@ -1,4 +1,3 @@
-
 package dev.mayglo.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,7 +22,7 @@ public class LoginController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println(req.getRequestURI() + " GETTED");    // Just to signify GETs, does what PostMan does
+        System.out.println(req.getRequestURI() + " retrieved");    // Just to signify GETs, does what PostMan does
     }
 
     @Override
@@ -34,25 +33,39 @@ public class LoginController extends HttpServlet {
 
         // We unmarshall the JSON string into a Java instance of the User class
         try {
-            user = mapper.readValue(JSON, User.class);  // Map request info (JSON) to a User object
+            // Map and return this as the JSON response if login information is incorrect.
+            User dummyUser = new User(
+                    -1,
+                    "null",
+                    "null",
+                    "null",
+                    "null",
+                    "null",
+                    true,
+                    -1
+            );
 
+            user = mapper.readValue(JSON, User.class);  // Map request info (JSON) to a User object
             User DBUser = userService.getByUsername(user.getUsername());    // Find a matching username in database
 
-            if (DBUser != null)      // If a user is found
-            {
-                if (userService.checkUser(DBUser, user))   // If the password matches
-                {
+            // If a user is found
+            if (DBUser != null) {
+                // If the password matches
+                if (userService.checkUser(DBUser, user)) {
                     logger.info("Found: " + DBUser);
-
                     JSON = mapper.writeValueAsString(DBUser);
+                    logger.debug(JSON);
+                    resp.getOutputStream().println(JSON);
+                } else {
+                    logger.debug("User found but password was incorrect.");
+                    JSON = mapper.writeValueAsString(dummyUser);
                     resp.getOutputStream().println(JSON);
                 }
-                else    // Otherwise
-                {
-                    resp.setStatus(205);    // Another code that isn't listed above
-                }
-
                 logger.info(user.toString());
+            } else {
+                logger.debug("User not found");
+                JSON = mapper.writeValueAsString(dummyUser);
+                resp.getOutputStream().println(JSON);
             }
         } catch (Exception e) {
             logger.warn(e);
