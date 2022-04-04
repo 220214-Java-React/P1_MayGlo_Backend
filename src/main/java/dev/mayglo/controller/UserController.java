@@ -156,6 +156,8 @@ public class UserController extends HttpServlet {
      */
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        final int CREATED = 201;
+        final int ERROR = 406;
         String JSON = req.getReader().lines().collect(Collectors.joining());
         User user = null;
         logger.info(JSON);
@@ -165,9 +167,10 @@ public class UserController extends HttpServlet {
             user = mapper.readValue(JSON, User.class);
             userService.create(user);
             logger.debug(user.toString());
-            resp.setStatus(201);
+            resp.setStatus(CREATED);
         } catch (Exception e) {
             logger.warn(e);
+            resp.setStatus(ERROR);
         }
     }
 
