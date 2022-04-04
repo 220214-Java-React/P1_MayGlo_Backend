@@ -5,9 +5,13 @@
 # Output
 build
 out
+*.log
 
 # Gradle Files and Folders
 .gradle
 gradle
 gradlew
 gradlew.bat
+
+# Environment files
+*.env
