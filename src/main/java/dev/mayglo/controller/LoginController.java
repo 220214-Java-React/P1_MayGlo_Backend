@@ -14,17 +14,22 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.stream.Collectors;
 
+/**
+ * Provides access to RESTful methods to validate login attempts.
+ */
 @WebServlet(urlPatterns = "/login.html")
 public class LoginController extends HttpServlet {
     private static final Logger logger = LogManager.getLogger(LoginController.class.getName());
     private final UserService userService = new UserService();
     private final ObjectMapper mapper = new ObjectMapper();
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println(req.getRequestURI() + " retrieved");    // Just to signify GETs, does what PostMan does
-    }
-
+    /**
+     * Checks the credentials entered by a client against credentials in the database.
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // Extract the request payload in JSON form from the BufferedReader on the request object
@@ -70,5 +75,17 @@ public class LoginController extends HttpServlet {
         } catch (Exception e) {
             logger.warn(e);
         }
+    }
+
+    /**
+     * Unused in this implementation.
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println(req.getRequestURI() + " retrieved");
     }
 }
