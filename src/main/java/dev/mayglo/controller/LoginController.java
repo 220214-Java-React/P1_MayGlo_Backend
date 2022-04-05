@@ -14,10 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.stream.Collectors;
 
-/**
- * Provides access to RESTful methods to validate login attempts.
- */
-@WebServlet(urlPatterns = "/login.html")
+
+@WebServlet(urlPatterns = "/login/*")
 public class LoginController extends HttpServlet {
     private static final Logger logger = LogManager.getLogger(LoginController.class.getName());
     private final UserService userService = new UserService();
