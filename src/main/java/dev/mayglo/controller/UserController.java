@@ -68,12 +68,14 @@ public class UserController extends HttpServlet {
                 JSON = mapper.writeValueAsString(userByUsername);               // Marshall into JSON
                 resp.setContentType("application/json");                        // Set Content Type
                 resp.setStatus(200);                                            // Set Status
+                resp.getOutputStream().println(JSON);
             } else {
                 logger.debug("Could not find user.");
                 userByUsername = dummyUser;
                 JSON = mapper.writeValueAsString(userByUsername);               // Marshall into JSON
                 resp.setContentType("application/json");                        // Set Content Type
                 resp.setStatus(200);                                            // Set Status
+                resp.getOutputStream().println(JSON);
             }
         }
 
@@ -177,13 +179,22 @@ public class UserController extends HttpServlet {
 
         // Update an existing user
         if (updateByID != null) {
+            String encryptedPassword;
+            User userToUpdate = mapper.readValue(JSON, User.class);
+
             // Parse the integer value of the ID from the provided string
             int userID = Integer.parseInt(updateByID);
 
             // Create a temporary User with the new values
             User updatedUser = mapper.readValue(JSON, User.class);
             updatedUser.setUser_ID(userID);
-            String encryptedPassword = userService.encryptPassword(updatedUser.getPassword());
+
+            // If the password is the same as DB version, do not encrypt again
+            if (userToUpdate.getPassword().equals(userService.getByID(userID).getPassword()))
+                encryptedPassword = userToUpdate.getPassword();
+            else
+                encryptedPassword = userService.encryptPassword(updatedUser.getPassword());
+
             updatedUser.setPassword(encryptedPassword);
             logger.debug(updatedUser.toString());
 
