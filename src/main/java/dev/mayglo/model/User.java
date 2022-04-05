@@ -81,8 +81,6 @@ public class User
         this.role_ID = role_ID;
     }
 
-			  
-
     /**
      * Gets the user_ID value of a User.
      * @return This User's user_ID
@@ -140,37 +138,32 @@ public class User
         return role_ID;
     }
 
-
+    /**
+     * Sets a user's ID number. Used only for updating users.
+     * @param user_ID The ID (int) to set
+     */
     public void setUser_ID(Integer user_ID) {this.user_ID = user_ID;}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
+    /**
+     * Sets a user's password.
+     * @param password The password (string) to set
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setGiven_name(String given_name) {
-        this.given_name = given_name;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
+    /**
+     * Sets a user's activity status
+     * @param is_Active A boolean
+     */
     public void setIs_Active(Boolean is_Active) {
         this.is_Active = is_Active;
     }
 
-    public void setRole_ID(Integer role_ID) {
-        this.role_ID = role_ID;
-    }
-
+    /**
+     * Sets all User fields except user_ID. Used for updating users.
+     * @param updatedUser User with updated data
+     */
     public void setAll(User updatedUser) {
         this.username = updatedUser.getUsername();
         this.password = updatedUser.getPassword();

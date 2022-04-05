@@ -22,6 +22,7 @@ public class UserRepository implements MainDAO<User>, DatabaseRef {
 
     /**
      * Creates a user.
+     *
      * @param user User to be created
      */
     @Override
@@ -52,6 +53,7 @@ public class UserRepository implements MainDAO<User>, DatabaseRef {
 
     /**
      * Gets a User by their ID number.
+     *
      * @param id The ID number
      * @return User corresponding with the provided ID number
      */
@@ -87,6 +89,7 @@ public class UserRepository implements MainDAO<User>, DatabaseRef {
 
     /**
      * Gets a User by their username number.
+     *
      * @param username The username
      * @return User corresponding with the provided username
      */
@@ -120,9 +123,9 @@ public class UserRepository implements MainDAO<User>, DatabaseRef {
         return user;
     }
 
-
     /**
      * Returns a list of all Users in the database.
+     *
      * @return A User List
      */
     @Override
@@ -157,6 +160,7 @@ public class UserRepository implements MainDAO<User>, DatabaseRef {
 
     /**
      * Updates a User.
+     *
      * @param user User to update
      */
     @Override
@@ -191,6 +195,7 @@ public class UserRepository implements MainDAO<User>, DatabaseRef {
 
     /**
      * Unused by this repository.
+     *
      * @param id
      */
     public void updateByID(Integer id) {
@@ -198,6 +203,7 @@ public class UserRepository implements MainDAO<User>, DatabaseRef {
 
     /**
      * Deletes a User.
+     *
      * @param user User to delete
      */
     @Override
@@ -219,6 +225,7 @@ public class UserRepository implements MainDAO<User>, DatabaseRef {
 
     /**
      * Unused by this repository.
+     *
      * @param s
      */
     public void delete(String s) {
