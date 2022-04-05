@@ -38,16 +38,22 @@ public class ReimbService
 
         if (pending == 1)
         {
-            for (Reimbursement r: tempReimb)
+            if (tempReimb != null)
             {
-                if (r.getStatus_ID() == 0) transferReimb.add(r);
+                for (Reimbursement r: tempReimb)
+                {
+                    if (r.getStatus_ID() == 0) transferReimb.add(r);
+                }
             }
         }
         else
         {
-            for (Reimbursement r: tempReimb)
+            if (tempReimb != null)
             {
-                if (r.getStatus_ID() != 0) transferReimb.add(r);
+                for (Reimbursement r: tempReimb)
+                {
+                    if (r.getStatus_ID() != 0) transferReimb.add(r);
+                }
             }
         }
 
