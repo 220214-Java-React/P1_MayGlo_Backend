@@ -15,6 +15,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Provides access to RESTful methods to manipulate and retrieve Reimbursements.
+ */
 @WebServlet(urlPatterns = "/reimbursements/*")
 public class ReimbursementController extends HttpServlet
 {
@@ -23,6 +26,16 @@ public class ReimbursementController extends HttpServlet
     private final ReimbService reimbService = new ReimbService();
     private final ObjectMapper mapper = new ObjectMapper();
 
+    /**
+     * Returns Reimbursement items depending on the requester's role_ID.
+     * Employee records are retrieved with their "clientID" (user_ID).
+     * Managers return all records with ReimbService's getAllForManagers method.
+     *
+     * @param req  Request that was received
+     * @param resp Response to return
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
@@ -71,6 +84,14 @@ public class ReimbursementController extends HttpServlet
         }
     }
 
+    /**
+     * Creates a Reimbursement. Takes the "clientID" (user_ID) as a parameter to denote the request creator.
+     *
+     * @param req  Request that was received
+     * @param resp Response to return
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
@@ -91,7 +112,15 @@ public class ReimbursementController extends HttpServlet
         }
     }
 
-    // At this time, only managers use this to update reimbursements for approvals/denials
+    /**
+     * Updates a reimbursement. Employees may update a pending reimbursement.
+     * Managers may update a reimbursement by approving or denying it.
+     * Only managers may approve/deny reimbursements.
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {

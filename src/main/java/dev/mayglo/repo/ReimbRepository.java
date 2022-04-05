@@ -14,6 +14,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ReimbRepository interacts with the SQL database to create, read, update, and delete Reimbursement data.
+ */
 public class ReimbRepository implements MainDAO<Reimbursement>, DatabaseRef
 {
     private static final Logger logger = LogManager.getLogger(ReimbRepository.class);
@@ -114,7 +117,6 @@ public class ReimbRepository implements MainDAO<Reimbursement>, DatabaseRef
         return reimb;   // Null or reimbursement object
     }
 
-
     /**
      * Gets all reimbursements found in the database
      * @return List of reimbursements
@@ -165,6 +167,11 @@ public class ReimbRepository implements MainDAO<Reimbursement>, DatabaseRef
 
         return reimbs;  // Null or list of reimbursements
     }
+
+    /**
+     * Returns a list of reimbursements made by users with the role ID 1 (Manager)
+     * @return A Reimbursement List
+     */
     public List<Reimbursement> getAllForManagers()
     {
         List<Reimbursement> reimbs = null;
@@ -288,6 +295,10 @@ public class ReimbRepository implements MainDAO<Reimbursement>, DatabaseRef
         return reimbs;   // Null or reimbursements
     }
 
+    /**
+     * Updates a Reimbursement.
+     * @param reimbursement Reimbursement to update
+     */
     @Override
     public void update(Reimbursement reimbursement)
     {
@@ -326,6 +337,10 @@ public class ReimbRepository implements MainDAO<Reimbursement>, DatabaseRef
         }
     }
 
+    /**
+     * Resolves an existing Reimbursement via update.
+     * @param reimbursement Reimbursement to resolve
+     */
     public void updateResolved(Reimbursement reimbursement)
     {
         if (reimbursement.getReimb_ID() == 0)
@@ -361,6 +376,10 @@ public class ReimbRepository implements MainDAO<Reimbursement>, DatabaseRef
         }
     }
 
+    /**
+     * Deletes a Reimbursement.
+     * @param reimbursement Reimbursement to delete
+     */
     @Override
     public void delete(Reimbursement reimbursement)
     {

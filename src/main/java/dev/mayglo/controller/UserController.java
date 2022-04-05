@@ -13,14 +13,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Provides access to RESTful methods to manipulate Users.
+ * Provides access to RESTful methods to manipulate and retrieve Users.
  */
 @WebServlet(urlPatterns = "/users/*")
 public class UserController extends HttpServlet {
@@ -35,6 +33,7 @@ public class UserController extends HttpServlet {
      * <li>Search by ID</li>
      * <li>Search by is_Active</li>
      * <li>Search by role_ID</li>
+     * <li>Search by username</li>
      * </ul>
      *
      * @param req  Request that was received
@@ -62,24 +61,19 @@ public class UserController extends HttpServlet {
                 -1
         );
 
-        if (byUsername != null)
-        {
+        if (byUsername != null) {
             User userByUsername = userService.getByUsername(byUsername);    // Get user object
             if (userByUsername != null) {
                 logger.debug(userByUsername.toString());                        // Log what was found
                 JSON = mapper.writeValueAsString(userByUsername);               // Marshall into JSON
                 resp.setContentType("application/json");                        // Set Content Type
                 resp.setStatus(200);                                            // Set Status
-                resp.getOutputStream().println(JSON);                           // Send User back to client
-                System.out.print(JSON);
             } else {
                 logger.debug("Could not find user.");
                 userByUsername = dummyUser;
                 JSON = mapper.writeValueAsString(userByUsername);               // Marshall into JSON
                 resp.setContentType("application/json");                        // Set Content Type
                 resp.setStatus(200);                                            // Set Status
-                resp.getOutputStream().println(JSON);                           // Send User back to client
-                System.out.print(JSON);
             }
         }
 
@@ -111,12 +105,6 @@ public class UserController extends HttpServlet {
 
         // Search by role_ID
         if (byrole_ID != null) {
-
-            // Show enum text value of role
-            int roleInt = Integer.parseInt(byrole_ID);
-            UserRole enumVal = UserRole.values()[roleInt];
-            logger.debug(enumVal);
-
             List<User> usersByRole = new ArrayList<>();
             for (User user : userService.getAll()) {
                 if (user.getRole_ID().equals(Integer.parseInt(byrole_ID))) {
@@ -223,7 +211,6 @@ public class UserController extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String byID = req.getParameter("id");
-
         String JSON = req.getReader().lines().collect(Collectors.joining());
         User userToDelete = null;
 

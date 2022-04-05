@@ -5,18 +5,6 @@ package dev.mayglo.model;
  */
 public class Reimbursement
 {
-    // Reimbursement objects contain basic details.
-
-    // Type:
-    //      - Lodging
-    //      - Travel
-    //      - Food
-    //      - Other
-
-    // Status:
-    //      - Pending
-    //      - Approved
-    //      - Denied
 
     /**
      * Fields
@@ -26,8 +14,6 @@ public class Reimbursement
     private String timeSubmitted;
     private String timeResolved;
     private String description;
-    // receipt would go here ----
-    // private Integer payment_ID;  --- future implementation
     private Integer author_ID;
     private Integer resolver_ID;
     private String authorName;
@@ -40,7 +26,11 @@ public class Reimbursement
      */
     public Reimbursement() {}
 
-    // For JUNIT test
+    /**
+     * A basic Reimbursement constructor for JUnit testing.
+     * @param amount Amount of this reimbursement
+     * @param author_ID User_ID for the auther of this reimbursement
+     */
     public Reimbursement(Double amount, Integer author_ID)
     {
         this.amount = amount;
@@ -97,13 +87,19 @@ public class Reimbursement
         this.type_ID = type_ID;
     }
 
-    // GETTERS
-
+    /**
+     * Gets the ID of this Reimbursement.
+     * @return ID (int)
+     */
     public Integer getReimb_ID()
     {
         return reimb_ID;
     }
 
+    /**
+     * Gets the amount of this Reimbursement.
+     * @return Amount (double)
+     */
     public Double getAmount()
     {
         return amount;
@@ -119,16 +115,28 @@ public class Reimbursement
         return timeResolved;
     }
 
+    /**
+     * Gets the description of this Reimbursement.
+     * @return Description (string)
+     */
     public String getDescription()
     {
         return description;
     }
 
+    /**
+     * Gets the user_ID of the author of this Reimbursement.
+     * @return User_ID (int) of the author
+     */
     public Integer getAuthor_ID()
     {
         return author_ID;
     }
 
+    /**
+     * Gets the user_ID of the resolver of this Reimbursement.
+     * @return User_ID (int) of the resolver
+     */
     public Integer getResolver_ID()
     {
         return resolver_ID;
@@ -144,18 +152,25 @@ public class Reimbursement
         return resolverName;
     }
 
+    /**
+     * Gets the status of this Reimbursement.
+     * @return Status (int) of this Reimbursement
+     */
     public Integer getStatus_ID()
     {
         return status_ID;
     }
 
+    /**
+     * Gets the type of this Reimbursement.
+     * @return Type (int) of this Reimbursement
+     */
     public Integer getType_ID()
     {
         return type_ID;
     }
 
 
-    // SETTERS
 
     public void setReimb_ID(Integer reimb_ID)
     {
@@ -182,11 +197,19 @@ public class Reimbursement
         this.description = description;
     }
 
+    /**
+     * Sets the author's user_ID for this Reimbursement.
+     * @param author_ID User_ID (int) to set
+     */
     public void setAuthor_ID(Integer author_ID)
     {
         this.author_ID = author_ID;
     }
 
+    /**
+     * Sets the resolver's user_ID for this Reimbursement.
+     * @param resolver_ID User_ID (int) to set
+     */
     public void setResolver_ID(Integer resolver_ID)
     {
         this.resolver_ID = resolver_ID;
@@ -202,11 +225,19 @@ public class Reimbursement
         this.resolverName = resolverName;
     }
 
+    /**
+     * Sets the status_ID for this reimbursement.
+     * @param status_ID Status ID (int) to set
+     */
     public void setStatus_ID(Integer status_ID)
     {
         this.status_ID = status_ID;
     }
 
+    /**
+     * Sets the type_ID for this reimbursement.
+     * @param type_ID Type ID (int) to set
+     */
     public void setType_ID(Integer type_ID)
     {
         this.type_ID = type_ID;
