@@ -52,12 +52,19 @@ public class ReimbursementController extends HttpServlet
             {
                 reimbursements = reimbService.getByAuthorID(Integer.parseInt(clientID));    // Get reimbursements via ID
 
-                String JSON = mapper.writeValueAsString(reimbursements);    // Marshall into JSON
-                resp.setContentType("application/json");                    // Set content type
-                resp.setStatus(200);                                        // Set Status
-                resp.getOutputStream().println(JSON);                       // Send reimbursements to frontend
+                if (reimbursements !=  null)
+                {
+                    String JSON = mapper.writeValueAsString(reimbursements);    // Marshall into JSON
+                    resp.setContentType("application/json");                    // Set content type
+                    resp.setStatus(200);                                        // Set Status
+                    resp.getOutputStream().println(JSON);                       // Send reimbursements to frontend
 
-                logger.info(JSON);
+                    logger.info(JSON);
+                }
+                else
+                {
+                    resp.setStatus(204);                                        // No reimbursements to show
+                }
             }
             else
             {
@@ -75,12 +82,19 @@ public class ReimbursementController extends HttpServlet
 
             reimbursements = reimbService.getAllForManagers(getPending);          // Get all reimbursements
 
-            String JSON = mapper.writeValueAsString(reimbursements);    // Marshall into JSON
-            resp.setContentType("application/json");                    // Set content type
-            resp.setStatus(200);                                        // Set status
-            resp.getOutputStream().println(JSON);                       // Send to frontend
+            if (reimbursements != null)
+            {
+                String JSON = mapper.writeValueAsString(reimbursements);    // Marshall into JSON
+                resp.setContentType("application/json");                    // Set content type
+                resp.setStatus(200);                                        // Set status
+                resp.getOutputStream().println(JSON);                       // Send to frontend
 
-            logger.info(JSON);
+                logger.info(JSON);
+            }
+            else
+            {
+                resp.setStatus(404);                                        // No reimbursements to return
+            }
         }
     }
 
