@@ -16,9 +16,9 @@ public class ConnectionFactory {
     static Logger logger = LogManager.getLogger(ConnectionFactory.class.getName());
 
     private static Connection instance;
-    private static String url = "jdbc:postgresql://postgres-test.cr8roorqjz0c.us-east-1.rds.amazonaws.com:5432/postgres?currentSchema=test-p1";
-    private static String username = "postgres";
-    private static String password = "&hV#JVVu3&c4";
+    private static String url = "jdbc:postgresql://*.*.amazonaws.com:5432/postgres?currentSchema=test-p1";
+    private static String username = "*";
+    private static String password = "*";
 
     /**
      * If there is no Connection or the Connection is closed, this method creates a Connection
